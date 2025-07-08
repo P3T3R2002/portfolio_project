@@ -11,7 +11,6 @@ class Asteroid(CircleShape):
         pygame.draw.circle(screen, 'white', self.position, self.radius, width=2)
         
     def update(self, dt, camera):
-
         self.position += self.velocity*dt - camera.velocity
 
     def split(self):
@@ -27,3 +26,5 @@ class Asteroid(CircleShape):
         aster2 = Asteroid(self.position[0], self.position[1], new_radius)
         aster2.velocity = vel2*1.2
 
+    def __repr__(self) -> str:
+        return f"{self.position[0]}:{self.position[1]}, radious: {self.radius}"

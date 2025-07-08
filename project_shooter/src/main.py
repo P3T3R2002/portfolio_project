@@ -7,6 +7,7 @@ from player import*
 from asteroid import*
 from asteroidfield import*
 from camera import *
+from game_map import *
 
 def main():
     pygame.init()
@@ -16,6 +17,7 @@ def main():
     print("Starting asteroids!")
     print(f"Screen width: {SCREEN_WIDTH}")
     print(f"Screen height: {SCREEN_HEIGHT}")
+
 
     while True:
         updatable = pygame.sprite.Group()
@@ -33,15 +35,22 @@ def main():
         Player.containers = (updatable, drawable)
         player = Player(SCREEN_WIDTH/2, SCREEN_HEIGHT/2)
 
-        camera = Camera(player)
+        planets = BST_Map_Node()
+
+        camera = Camera()
         dead = False
         while not dead:
             screen.fill('black')
             for thing in updatable:
                 thing.update(dt, camera)
+            planets.update(dt, camera)
 
+            planets.draw(screen)
             for thing in drawable:
-                thing.draw(screen)
+                if camera.is_visible(screen, thing):
+                    thing.draw(screen)
+            planets.draw_minimap(screen)
+            camera.draw(screen)
 
             for asteroid in asteroids:
                 if not asteroid.collsion(player):
