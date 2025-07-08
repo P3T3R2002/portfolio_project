@@ -53,13 +53,13 @@ def main():
             camera.draw(screen)
 
             for asteroid in asteroids:
-                if not asteroid.collsion(player):
+                if asteroid.collsion(player):
                     print(f"Game Over!\nYour score: {player.score}")
                     dead = True
 
             for asteroid in asteroids:
                 for bullet in shoots:
-                    if not asteroid.collsion(bullet): 
+                    if asteroid.collsion(bullet): 
                         player.score += 1                   
                         asteroid.split()
                         bullet.kill()
