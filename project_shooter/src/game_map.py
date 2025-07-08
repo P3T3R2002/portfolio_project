@@ -60,12 +60,40 @@ class BST_Map_Node(CircleShape):
         if self.right:
             self.right.draw_minimap(screen)     
         
+    def collsion(self, other):
+        if super().collsion(other):
+            if self.available and not self.completed:
+                keys = pygame.key.get_pressed()
+                if keys[pygame.K_SPACE]:
+                    self.completed_Node()
+                    return True
+        
+        if self.left:
+            if self.left.collsion(other):
+                return True
+        if self.right:
+            if self.right.collsion(other):
+                return True
+        return False
+        
+
     def update(self, dt, camera):
         self.position += self.velocity*dt - camera.velocity
+
+        winner1 = False
+        winner2 = False
         if self.left:
-            self.left.update(dt, camera)
+            winner1 = self.left.update(dt, camera)
+        else:
+            winner1 = self.completed
         if self.right:
-            self.right.update(dt, camera)
+            winner2 = self.right.update(dt, camera)
+        else:
+            winner2 = self.completed
+        if winner2 and winner1:
+            return True
+        return False
+         
 
 
 

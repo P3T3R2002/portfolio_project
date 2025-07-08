@@ -39,11 +39,12 @@ def main():
 
         camera = Camera()
         dead = False
-        while not dead:
+        winner = False
+        while not dead and not winner:
             screen.fill('black')
             for thing in updatable:
                 thing.update(dt, camera)
-            planets.update(dt, camera)
+            winner = planets.update(dt, camera)
 
             planets.draw(screen)
             for thing in drawable:
@@ -52,6 +53,7 @@ def main():
             planets.draw_minimap(screen)
             camera.draw(screen)
 
+            planets.collsion(player)
             for asteroid in asteroids:
                 if asteroid.collsion(player):
                     print(f"Game Over!\nYour score: {player.score}")
