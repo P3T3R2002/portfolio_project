@@ -9,7 +9,7 @@ from Space.asteroid import*
 from Space.game_map import *
 from Space.asteroidfield import*
 
-def Space():
+def Space(planets):
     dt = 0
     screen = pygame.display.get_surface()
     game_time = pygame.time.Clock()
@@ -30,7 +30,6 @@ def Space():
         Space_Player.containers = (updatable, drawable)
         player = Space_Player(SCREEN_WIDTH/2, SCREEN_HEIGHT/2)
 
-        planets = BST_Map_Node()
 
         camera = Camera()
         dead = False

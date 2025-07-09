@@ -22,13 +22,16 @@ class BST_Map_Node(CircleShape):
         self.left = BST_Map_Node(self.val.difficulty+1, num*2)
         self.right = BST_Map_Node(self.val.difficulty+1, num*2+1)
 
-    def completed_Node(self): 
-        self.val.completed = True
-        self.available = False
-        if self.left:
-            self.left.available = True
-        if self.right:
-            self.right.available = True
+    def completed_Node(self, planet): 
+        if self.val == planet:
+            self.available = False
+            if self.left:
+                self.left.available = True
+            if self.right:
+                self.right.available = True
+        else:
+            self.left.completed_Node(planet)
+            self.right.completed_Node(planet)
 
     def draw(self, screen):
         color = None

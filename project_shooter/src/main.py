@@ -12,9 +12,17 @@ def main():
     print(f"Screen width: {SCREEN_WIDTH}")
     print(f"Screen height: {SCREEN_HEIGHT}")
 
-    planet = Space()
-    if planet:
-        Planet(planet)
+
+    planets = BST_Map_Node()
+    while True:
+
+        planet = Space(planets)
+        if not planet:
+            return 
+        if not Planet(planet):
+            return 
+        planets.completed_Node(planet)
+
 
 
 
