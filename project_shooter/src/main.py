@@ -14,14 +14,24 @@ def main():
 
 
     planets = BST_Map_Node()
+    player = Space_Player(SCREEN_WIDTH/2, SCREEN_HEIGHT/2)
+    
     while True:
+        print("Going into space...")
 
-        planet = Space(planets)
+        planet = Space(planets, player)
         if not planet:
+            print("Exit")
             return 
-        if not Planet(planet):
+        print(f"Going into Planet {planet.get_difficulty()}")
+        player = player.change_player()
+        if not Planet(planet, player):
+            print("Exit")
             return 
+        
+        print(f"Completed Planet {planet.get_difficulty()}")
         planets.completed_Node(planet)
+        player = player.change_player()
 
 
 

@@ -2,14 +2,14 @@
 # the open-source pygame library
 # throughout this file
 import pygame
-from camera import *
 from constants import*
-from Space.player import*
-from Space.asteroid import*
+from Space.camera import *
+from player import *
+from Space.asteroid import *
 from Space.game_map import *
-from Space.asteroidfield import*
+from Space.asteroidfield import *
 
-def Space(planets):
+def Space(planets, player):
     dt = 0
     screen = pygame.display.get_surface()
     game_time = pygame.time.Clock()
@@ -20,16 +20,12 @@ def Space(planets):
         asteroids = pygame.sprite.Group()
         shoots = pygame.sprite.Group()
 
-        Shoot.containers = (shoots, updatable, drawable)
+        Space_Shoot.containers = (shoots, updatable, drawable)
 
         Asteroid.containers = (asteroids, updatable, drawable)
 
         AsteroidField.containers = (updatable)
         asteroidfield = AsteroidField()
-
-        Space_Player.containers = (updatable, drawable)
-        player = Space_Player(SCREEN_WIDTH/2, SCREEN_HEIGHT/2)
-
 
         camera = Camera()
         dead = False
@@ -38,12 +34,14 @@ def Space(planets):
             screen.fill('black')
             for thing in updatable:
                 thing.update(dt, camera)
+            player.update(dt, camera)
             winner = planets.update(dt, camera)
 
             planets.draw(screen)
             for thing in drawable:
                 if camera.is_visible(screen, thing):
                     thing.draw(screen)
+            player.draw(screen)
             planets.draw_minimap(screen)
             camera.draw(screen)
 
@@ -57,6 +55,7 @@ def Space(planets):
                 if asteroid.collsion(player):
                     print(f"Game Over!\nYour score: {player.score}")
                     dead = True
+                    planets.reset_pos()
 
             planet = planets.collsion(player)
             if planet:

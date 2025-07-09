@@ -17,10 +17,11 @@ class BST_Map_Node(CircleShape):
         self.__generate_map(4, num)
 
     def __generate_map(self, max_diff, num):
-        if self.val.difficulty == max_diff:
+        dif = self.val.get_difficulty()
+        if dif == max_diff:
             return
-        self.left = BST_Map_Node(self.val.difficulty+1, num*2)
-        self.right = BST_Map_Node(self.val.difficulty+1, num*2+1)
+        self.left = BST_Map_Node(dif+1, num*2)
+        self.right = BST_Map_Node(dif+1, num*2+1)
 
     def completed_Node(self, planet): 
         if self.val == planet:
@@ -30,12 +31,14 @@ class BST_Map_Node(CircleShape):
             if self.right:
                 self.right.available = True
         else:
-            self.left.completed_Node(planet)
-            self.right.completed_Node(planet)
+            if self.left:
+                self.left.completed_Node(planet)
+            if self.right:
+                self.right.completed_Node(planet)
 
     def draw(self, screen):
         color = None
-        if self.val.completed:
+        if self.val.get_completion():
             color = 'Green'
         elif self.available:
             color = 'Blue'
@@ -51,7 +54,7 @@ class BST_Map_Node(CircleShape):
         pygame.draw.rect(screen, "yellow", pygame.Rect((0, 0), (200, 100)), 2)
         pos = ((self.start_pos.x + MAP_WIDTH/2)/100, (self.start_pos.y + (MAP_HIGHT+200))/100)
         color = None
-        if self.val.completed:
+        if self.val.get_completion():
             color = 'Green'
         elif self.available:
             color = 'Blue'
@@ -68,8 +71,7 @@ class BST_Map_Node(CircleShape):
             if self.available:
                 keys = pygame.key.get_pressed()
                 if keys[pygame.K_SPACE]:
-                    self.completed_Node()
-                    return self
+                    return self.val
         
         if self.left:
             return self.left.collsion(other)
@@ -85,15 +87,20 @@ class BST_Map_Node(CircleShape):
         if self.left:
             winner1 = self.left.update(dt, camera)
         else:
-            winner1 = self.val.completed
+            winner1 = self.val.get_completion()
         if self.right:
             winner2 = self.right.update(dt, camera)
         else:
-            winner2 = self.val.completed
+            winner2 = self.val.get_completion()
         if winner2 and winner1:
             return True
         return False
          
-
+    def reset_pos(self):
+        self.position = pygame.Vector2(self.start_pos.x, self.start_pos.y)
+        if self.left:
+            self.left.reset_pos()
+        if self.right:
+            self.right.reset_pos()
 
 
