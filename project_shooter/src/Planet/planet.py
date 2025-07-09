@@ -35,6 +35,17 @@ def Planet(planet, player):
                 thing.draw(screen)
             player.draw(screen)
 
+
+            for bullet1 in shoots:
+                for bullet2 in shoots:
+                    if bullet1.collsion(bullet2): 
+                        player.score += 1                   
+                        bullet2.kill()
+                        bullet1.kill()
+                if bullet1.collsion(player):
+                    print(f"Game Over!\nYour score: {player.score}")
+                    dead = True
+
             for event in pygame.event.get():
                 if event.type == pygame.QUIT:
                     return None
