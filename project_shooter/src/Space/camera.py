@@ -20,7 +20,9 @@ class Camera:
     def is_visible(self, screen, obj):
         return (-obj.radius <= obj.position.x <= screen.get_width() + obj.radius and
             -obj.radius <= obj.position.y <= screen.get_height() + obj.radius)
-
+    
+    def set_pos(self, x, y):
+        self.position = pygame.Vector2(x, y)
 
     def __repr__(self) -> str:
         return f"{self.position[0]}:{self.position[1]}"
