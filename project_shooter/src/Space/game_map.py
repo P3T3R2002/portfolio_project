@@ -71,12 +71,17 @@ class BST_Map_Node(CircleShape):
             if self.available:
                 keys = pygame.key.get_pressed()
                 if keys[pygame.K_SPACE]:
+                    print("OK")
                     return self.val
         
         if self.left:
-            return self.left.collsion(other)
+            planet =  self.left.collsion(other)
+            if planet:
+                return planet
         if self.right:
-            return self.right.collsion(other)
+            planet = self.right.collsion(other)
+            if planet:
+                return planet
         return None
       
     def update(self, dt, camera):

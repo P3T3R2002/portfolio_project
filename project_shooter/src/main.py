@@ -16,10 +16,11 @@ def main():
     planets = BST_Map_Node()
     player = Space_Player(SCREEN_WIDTH/2, SCREEN_HEIGHT/2)
     
+    camera = Camera()
     while True:
         print("Going into space...")
 
-        planet = Space(planets, player)
+        planet = Space(planets, player, camera)
         if not planet:
             print("Exit")
             return 

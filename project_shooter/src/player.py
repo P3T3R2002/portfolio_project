@@ -61,7 +61,7 @@ class Planet_Player(Character):
         self.shoot_timer = 0
 
     def change_player(self):
-        return Planet_Player(SCREEN_WIDTH/2, SCREEN_HEIGHT/2, self.score)
+        return Space_Player(SCREEN_WIDTH/2, SCREEN_HEIGHT/2, self.score)
     
     def draw(self, screen):
         pygame.draw.polygon(screen, 'white', self.triangle(), width=2)
@@ -97,10 +97,15 @@ class Planet_Player(Character):
     
     def planet_shoot(self):
         if self.shoot_timer == 0:
-            bullet = Planet_Shoot(self.position[0], self.position[1], PLAYER_SHOT_RADIUS)
+            bullet = Planet_Shoot(self.position.x+self.radius+PLAYER_SHOT_RADIUS, self.position.y, PLAYER_SHOT_RADIUS, True)
             bullet.velocity = pygame.Vector2(0, 1).rotate(self.rotation)*PLAYER_SHOOT_SPEED
             self.shoot_timer = PLAYER_SHOOT_COOLDOWN
-
+    
+    def collsion(self, other):
+        if not other.friendly:
+            return super().collsion(other)
+        return False
+    
 class Enemy(Character):
     def __init__(self, x, y, r, score = 0):
         super().__init__(x, y, score, r)
@@ -130,9 +135,14 @@ class Enemy(Character):
     
     def planet_shoot(self):
         if self.shoot_timer == 0:
-            bullet = Planet_Shoot(self.position[0], self.position[1], ENEMY_SHOT_RADIUS)
+            bullet = Planet_Shoot(self.position.x-self.radius-ENEMY_SHOT_RADIUS, self.position.y, ENEMY_SHOT_RADIUS, False)
             bullet.velocity = pygame.Vector2(-1, 0)*ENEMY_SHOOT_SPEED
             self.shoot_timer = ENEMY_SHOOT_COOLDOWN
+
+    def collsion(self, other):
+        if other.friendly:
+            return super().collsion(other)
+        return False
 
 class Space_Shoot(CircleShape):
     def __init__(self, x, y):
@@ -145,8 +155,9 @@ class Space_Shoot(CircleShape):
         self.position += self.velocity*dt - camera.velocity
 
 class Planet_Shoot(CircleShape):
-    def __init__(self, x, y, r):
+    def __init__(self, x, y, r, f):
         super().__init__(x, y, r)
+        self.friendly = f
     
     def draw(self, screen):
         pygame.draw.circle(screen, 'white', self.position, self.radius, width=2)
@@ -154,4 +165,8 @@ class Planet_Shoot(CircleShape):
     def update(self, dt):
         self.position += self.velocity*dt
 
+    def collsion(self, other):
+        if self.friendly != other.friendly:
+            return super().collsion(other)
+        return False
     
