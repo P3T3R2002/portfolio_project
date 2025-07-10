@@ -1,6 +1,6 @@
 import pygame
 import random
-from constants import *
+from constants import ENEMY_CONSTANTS, SCREEN_HEIGHT
 from circleshape import *
 from player import Enemy
 
@@ -16,13 +16,13 @@ class Planet:
 
     def update(self, dt):
         self.spawn_timer += dt
-        if self.spawn_timer > ENEMY_SPAWN_RATE:
+        if self.spawn_timer > ENEMY_CONSTANTS["ship"]["spawn_rate"][self.__difficulty]:
             self.spawn_timer = 0
 
             # spawn a new asteroid at a random edge
-            velocity = pygame.Vector2(-random.randint(GAME_CONSTANTS["enemy"]["ship"]["speed"]), 0)
-            position = pygame.Vector2(ENEMY_X_LINE, SCREEN_HEIGHT * random.randint(10, 90)/100)
-            self.spawn(ENEMY_RADIUS, position, velocity, self.__difficulty)
+            velocity = pygame.Vector2(-random.randint(ENEMY_CONSTANTS["ship"]["speed"][self.__difficulty]), 0)
+            position = pygame.Vector2(ENEMY_CONSTANTS["ship"]["spawn_line"], SCREEN_HEIGHT * random.randint(10, 90)/100)
+            self.spawn(ENEMY_CONSTANTS["ship"]["radius"], position, velocity, self.__difficulty)
 
     def completed(self):
         self.__completed = True

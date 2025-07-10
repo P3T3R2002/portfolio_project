@@ -2,7 +2,6 @@
 # the open-source pygame library
 # throughout this file
 import pygame
-from constants import*
 from Space.camera import *
 from player import *
 from Space.asteroid import *

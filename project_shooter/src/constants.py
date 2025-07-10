@@ -35,29 +35,34 @@ PLAYER_SPEED = [200, 400, 600]
 
 
 POWER_UP = ["dash", "piercing"]
-GAME_CONSTANTS = {'player': {'weapon': {'rate_of_fire': PLAYER_WEAPON_SPEED, 
-                                        'projectiles': {'num': PROJECTILES, 
-                                                        'speed':PLAYER_SHOOT_SPEED, 
-                                                        'radius': PLAYER_SHOT_RADIUS},
-                                        'directions': DIRECTIONS
-                                        },
-                            'ship': {'turn_speed': PLAYER_TURN_SPEED, 
-                                     'radius': PLAYER_RADIUS, 
-                                     'speed': PLAYER_SPEED, 
-                                     'power_up': POWER_UP
-                                     },
-                            },
-                  'enemy': {'weapon': {'speed':ENEMY_SHOOT_SPEED, 
-                                       'rate_of_fire': ENEMY_WEAPON_SPEED, 
-                                        'projectiles': {'speed': ENEMY_SHOOT_SPEED, 
-                                                        'radius': ENEMY_SHOT_RADIUS},
-                                       },
-                            'ship': {'radius': ENEMY_RADIUS, 
-                                     'speed': ENEMY_SPEED, 
-                                     'spawn_rate': ENEMY_SPAWN_RATE
-                                     },
-                            },
-                  'screen': {'width': SCREEN_WIDTH, 
-                             'height': SCREEN_HEIGHT
-                             }  
+PLAYER_CONSTANTS = {'weapon': {'rate_of_fire': PLAYER_WEAPON_SPEED, 
+                               'projectiles': {'num': PROJECTILES, 
+                                               'speed':PLAYER_SHOOT_SPEED, 
+                                               'radius': PLAYER_SHOT_RADIUS
+                                               },
+                                'directions': DIRECTIONS
+                                },
+                    'ship': {'turn_speed': PLAYER_TURN_SPEED, 
+                             'radius': PLAYER_RADIUS, 
+                             'speed': PLAYER_SPEED, 
+                             'power_up': POWER_UP
+                             },
                     }
+ENEMY_CONSTANTS =  {'weapon': {'speed':ENEMY_SHOOT_SPEED, 
+                              'rate_of_fire': ENEMY_WEAPON_SPEED, 
+                              'projectiles': {'speed': ENEMY_SHOOT_SPEED, 
+                                              'radius': ENEMY_SHOT_RADIUS
+                                              },
+                              },
+                    'ship': {'radius': ENEMY_RADIUS, 
+                             'speed': ENEMY_SPEED, 
+                             'spawn_rate': ENEMY_SPAWN_RATE,
+                             'spawn_line': ENEMY_X_LINE
+                             },
+                   }
+ASTEROID_CONSTANTS = {'min_radius': ASTEROID_MIN_RADIUS,
+                      'max_radius': ASTEROID_MAX_RADIUS,
+                      'kinds': ASTEROID_KINDS,
+                      'spawn_rate': ASTEROID_SPAWN_RATE
+                      }
+    

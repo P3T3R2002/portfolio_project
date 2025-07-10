@@ -2,7 +2,6 @@
 # the open-source pygame library
 # throughout this file
 import pygame
-from constants import*
 from player import*
 
 def Planet(planet, player):

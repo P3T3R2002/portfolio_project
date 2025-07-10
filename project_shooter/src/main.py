@@ -1,6 +1,6 @@
 
 import pygame
-from constants import*
+from constants import SCREEN_WIDTH, SCREEN_HEIGHT
 from Space.space import *
 from Planet.planet import *
 
@@ -9,8 +9,8 @@ def main():
     pygame.init()
     pygame.display.set_mode((SCREEN_WIDTH, SCREEN_HEIGHT))
     print("Starting asteroids!")
-    print(f"Screen width: {SCREEN_WIDTH}")
-    print(f"Screen height: {SCREEN_HEIGHT}")
+    print(f'Screen width: {SCREEN_WIDTH}')
+    print(f'Screen height: {SCREEN_HEIGHT}')
 
 
     planets = BST_Map_Node()
