@@ -20,9 +20,9 @@ class Planet:
             self.spawn_timer = 0
 
             # spawn a new asteroid at a random edge
-            velocity = pygame.Vector2(-random.randint(30, 50), 0)
+            velocity = pygame.Vector2(-random.randint(GAME_CONSTANTS["enemy"]["ship"]["speed"]), 0)
             position = pygame.Vector2(ENEMY_X_LINE, SCREEN_HEIGHT * random.randint(10, 90)/100)
-            self.spawn(ENEMY_RADIUS, position, velocity)
+            self.spawn(ENEMY_RADIUS, position, velocity, self.__difficulty)
 
     def completed(self):
         self.__completed = True

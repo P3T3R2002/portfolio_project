@@ -16,19 +16,17 @@ ASTEROID_SPAWN_RATE = 0.3  # seconds
 ASTEROID_MAX_RADIUS = ASTEROID_MIN_RADIUS * ASTEROID_KINDS
 
 
-ENEMY_SPAWN_RATE = 2
 ENEMY_X_LINE = 1000
 
 ENEMY_RADIUS = 50
-ENEMY_SPEED = 600
 ENEMY_SHOOT_SPEED = 200
 ENEMY_SHOOT_COOLDOWN = 2
 ENEMY_SHOT_RADIUS = 20
 
-WEAPON_SPEED = [0.5, 0.4, 0.3, 0.2, 0.1]
-PROJECTILES = [1, 2, 3]
-DIRECTIONS = [1, 2, 4]
-ENEMY_SPEED = [200, 400, 600]
+ENEMY_WEAPON_SPEED = [2, 1.5, 1, 0.5]
+ENEMY_SHOOT_SPEED = [100, 200, 300, 400]
+ENEMY_SPAWN_RATE = [2, 1.5, 1, 0.5]
+ENEMY_SPEED = [(50, 30), (60, 40), (80, 50), (100, 70)]
 
 PLAYER_WEAPON_SPEED = [0.5, 0.4, 0.3, 0.2, 0.1]
 PROJECTILES = [1, 2, 3]
@@ -37,10 +35,10 @@ PLAYER_SPEED = [200, 400, 600]
 
 
 POWER_UP = ["dash", "piercing"]
-GAME_CONSTANTS = {'player': {'weapon': {'speed': PLAYER_WEAPON_SPEED, 'projectiles': PROJECTILES},
-                            'ship': {'speed': PLAYER_SPEED, 'power_up': POWER_UP},
+GAME_CONSTANTS = {'player': {'weapon': {'speed':PLAYER_SHOOT_SPEED, 'rate_of_fire': PLAYER_WEAPON_SPEED, 'projectiles': PROJECTILES, 'directions': DIRECTIONS},
+                            'ship': {'radius': PLAYER_RADIUS, 'speed': PLAYER_SPEED, 'power_up': POWER_UP},
                             },
-                  'enemy': {'weapon': {'speed': WEAPON_SPEED},
-                            'ship': {'speed': PLAYER_SPEED, 'spawn_rate': POWER_UP},
+                  'enemy': {'weapon': {'speed':ENEMY_SHOOT_SPEED, 'rate_of_fire': ENEMY_WEAPON_SPEED, 'projectile_speed': ENEMY_SHOOT_SPEED},
+                            'ship': {'radius': ENEMY_RADIUS, 'speed': ENEMY_SPEED, 'spawn_rate': ENEMY_SPAWN_RATE},
                             },
                     }

@@ -1,8 +1,8 @@
 from circleshape import *
-from constants import *
+from constants import GAME_CONSTANTS
 
 class Character(CircleShape):
-    def __init__(self, x, y, score, r = PLAYER_RADIUS):
+    def __init__(self, x, y, score, r = GAME_CONSTANTS["player"]["ship"]["radius"]):
         super().__init__(x, y, r)
         self.rotation = 270
         self.shoot_timer = 0
@@ -53,7 +53,7 @@ class Space_Player(Character):
         if self.shoot_timer == 0:
             bullet = Space_Shoot(self.position[0], self.position[1])
             bullet.velocity = pygame.Vector2(0, 1).rotate(self.rotation)*PLAYER_SHOOT_SPEED
-            self.shoot_timer = PLAYER_SHOOT_COOLDOWN
+            self.shoot_timer = GAME_CONSTANTS["player"]["wepon"]["rate_of_fire"]
 
 class Planet_Player(Character):
     def __init__(self, x, y, score = 0):
@@ -107,9 +107,10 @@ class Planet_Player(Character):
         return False
     
 class Enemy(Character):
-    def __init__(self, x, y, r, score = 0):
+    def __init__(self, x, y, r, diff, score = 0):
         super().__init__(x, y, score, r)
         self.shoot_timer = 0
+        self.difficulty = diff
     
     def draw(self, screen):
         pygame.draw.polygon(screen, 'RED', self.triangle(), width=2)
@@ -135,9 +136,9 @@ class Enemy(Character):
     
     def planet_shoot(self):
         if self.shoot_timer == 0:
-            bullet = Planet_Shoot(self.position.x-self.radius-ENEMY_SHOT_RADIUS, self.position.y, ENEMY_SHOT_RADIUS, False)
-            bullet.velocity = pygame.Vector2(-1, 0)*ENEMY_SHOOT_SPEED
-            self.shoot_timer = ENEMY_SHOOT_COOLDOWN
+            bullet = Planet_Shoot(self.position.x-self.radius-GAME_CONSTANTS["enemy"]["ship"]["radius"], self.position.y, GAME_CONSTANTS["enemy"]["ship"]["radius"], False)
+            bullet.velocity = pygame.Vector2(-1, 0)*GAME_CONSTANTS["enemy"]["wepon"]["speed"][self.difficulty-1]
+            self.shoot_timer = GAME_CONSTANTS["enemy"]["wepon"]["rate_of_fire"][self.difficulty-1]
 
     def collsion(self, other):
         if other.friendly:
