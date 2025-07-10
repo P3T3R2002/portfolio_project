@@ -29,6 +29,7 @@ def Space(planets, player, camera):
         dead = False
         winner = False
         while not dead and not winner:
+            #print(screen)
             screen.fill('black')
             for thing in updatable:
                 thing.update(dt, camera)
