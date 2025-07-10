@@ -36,7 +36,7 @@ PLAYER_SPEED = [200, 400, 600]
 
 POWER_UP = ["dash", "piercing"]
 PLAYER_CONSTANTS = {'weapon': {'rate_of_fire': PLAYER_WEAPON_SPEED, 
-                               'projectiles': {'num': PROJECTILES, 
+                               'projectile': {'num': PROJECTILES, 
                                                'speed':PLAYER_SHOOT_SPEED, 
                                                'radius': PLAYER_SHOT_RADIUS
                                                },
@@ -48,9 +48,8 @@ PLAYER_CONSTANTS = {'weapon': {'rate_of_fire': PLAYER_WEAPON_SPEED,
                              'power_up': POWER_UP
                              },
                     }
-ENEMY_CONSTANTS =  {'weapon': {'speed':ENEMY_SHOOT_SPEED, 
-                              'rate_of_fire': ENEMY_WEAPON_SPEED, 
-                              'projectiles': {'speed': ENEMY_SHOOT_SPEED, 
+ENEMY_CONSTANTS =  {'weapon': {'rate_of_fire': ENEMY_WEAPON_SPEED, 
+                                'projectile': {'speed': ENEMY_SHOOT_SPEED, 
                                               'radius': ENEMY_SHOT_RADIUS
                                               },
                               },
