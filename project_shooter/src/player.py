@@ -14,7 +14,7 @@ class Space_Player(Character):
         self.shoot_timer = 0
 
     def change_player(self):
-        return Planet_Player(300, SCREEN_HEIGHT/2, self.score)
+        return Planet_Player(300, GAME_CONSTANTS["screen"]["widht"]/2, self.score)
 
     def draw(self, screen):
         pygame.draw.polygon(screen, 'white', self.triangle(), width=2)
@@ -28,7 +28,7 @@ class Space_Player(Character):
         return [a, b, c]    
 
     def rotate(self, dt):
-        self.rotation += PLAYER_TURN_SPEED*dt    
+        self.rotation += GAME_CONSTANTS["player"]["ship"]["turn_speed"]*dt    
 
     def update(self, dt, camera):
         keys = pygame.key.get_pressed()
@@ -52,7 +52,7 @@ class Space_Player(Character):
     def space_shoot(self):
         if self.shoot_timer == 0:
             bullet = Space_Shoot(self.position[0], self.position[1])
-            bullet.velocity = pygame.Vector2(0, 1).rotate(self.rotation)*PLAYER_SHOOT_SPEED
+            bullet.velocity = pygame.Vector2(0, 1).rotate(self.rotation)*GAME_CONSTANTS["player"]["wepon"]["speed"]
             self.shoot_timer = GAME_CONSTANTS["player"]["wepon"]["rate_of_fire"]
 
 class Planet_Player(Character):
@@ -98,8 +98,8 @@ class Planet_Player(Character):
     def planet_shoot(self):
         if self.shoot_timer == 0:
             bullet = Planet_Shoot(self.position.x+self.radius+PLAYER_SHOT_RADIUS, self.position.y, PLAYER_SHOT_RADIUS, True)
-            bullet.velocity = pygame.Vector2(0, 1).rotate(self.rotation)*PLAYER_SHOOT_SPEED
-            self.shoot_timer = PLAYER_SHOOT_COOLDOWN
+            bullet.velocity = pygame.Vector2(0, 1).rotate(self.rotation)*GAME_CONSTANTS["player"]["wepon"]["speed"]
+            self.shoot_timer = GAME_CONSTANTS["player"]["wepon"]["rate_of_fire"]
     
     def collsion(self, other):
         if not other.friendly:

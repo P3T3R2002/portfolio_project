@@ -5,8 +5,8 @@ MAP_WIDTH = 20000
 MAP_HIGHT = 10000
 
 PLAYER_RADIUS = 20
-PLAYER_TURN_SPEED = 300
 PLAYER_SPEED = 600
+PLAYER_TURN_SPEED = 300
 PLAYER_SHOOT_SPEED = 1500
 PLAYER_SHOOT_COOLDOWN = 0.5
 PLAYER_SHOT_RADIUS = 5
@@ -35,10 +35,29 @@ PLAYER_SPEED = [200, 400, 600]
 
 
 POWER_UP = ["dash", "piercing"]
-GAME_CONSTANTS = {'player': {'weapon': {'speed':PLAYER_SHOOT_SPEED, 'rate_of_fire': PLAYER_WEAPON_SPEED, 'projectiles': PROJECTILES, 'directions': DIRECTIONS},
-                            'ship': {'radius': PLAYER_RADIUS, 'speed': PLAYER_SPEED, 'power_up': POWER_UP},
+GAME_CONSTANTS = {'player': {'weapon': {'rate_of_fire': PLAYER_WEAPON_SPEED, 
+                                        'projectiles': {'num': PROJECTILES, 
+                                                        'speed':PLAYER_SHOOT_SPEED, 
+                                                        'radius': PLAYER_SHOT_RADIUS},
+                                        'directions': DIRECTIONS
+                                        },
+                            'ship': {'turn_speed': PLAYER_TURN_SPEED, 
+                                     'radius': PLAYER_RADIUS, 
+                                     'speed': PLAYER_SPEED, 
+                                     'power_up': POWER_UP
+                                     },
                             },
-                  'enemy': {'weapon': {'speed':ENEMY_SHOOT_SPEED, 'rate_of_fire': ENEMY_WEAPON_SPEED, 'projectile_speed': ENEMY_SHOOT_SPEED},
-                            'ship': {'radius': ENEMY_RADIUS, 'speed': ENEMY_SPEED, 'spawn_rate': ENEMY_SPAWN_RATE},
+                  'enemy': {'weapon': {'speed':ENEMY_SHOOT_SPEED, 
+                                       'rate_of_fire': ENEMY_WEAPON_SPEED, 
+                                        'projectiles': {'speed': ENEMY_SHOOT_SPEED, 
+                                                        'radius': ENEMY_SHOT_RADIUS},
+                                       },
+                            'ship': {'radius': ENEMY_RADIUS, 
+                                     'speed': ENEMY_SPEED, 
+                                     'spawn_rate': ENEMY_SPAWN_RATE
+                                     },
                             },
+                  'screen': {'width': SCREEN_WIDTH, 
+                             'height': SCREEN_HEIGHT
+                             }  
                     }
