@@ -24,3 +24,23 @@ ENEMY_SPEED = 600
 ENEMY_SHOOT_SPEED = 200
 ENEMY_SHOOT_COOLDOWN = 2
 ENEMY_SHOT_RADIUS = 20
+
+WEAPON_SPEED = [0.5, 0.4, 0.3, 0.2, 0.1]
+PROJECTILES = [1, 2, 3]
+DIRECTIONS = [1, 2, 4]
+ENEMY_SPEED = [200, 400, 600]
+
+PLAYER_WEAPON_SPEED = [0.5, 0.4, 0.3, 0.2, 0.1]
+PROJECTILES = [1, 2, 3]
+DIRECTIONS = [1, 2, 4]
+PLAYER_SPEED = [200, 400, 600]
+
+
+POWER_UP = ["dash", "piercing"]
+GAME_CONSTANTS = {'player': {'weapon': {'speed': PLAYER_WEAPON_SPEED, 'projectiles': PROJECTILES},
+                            'ship': {'speed': PLAYER_SPEED, 'power_up': POWER_UP},
+                            },
+                  'enemy': {'weapon': {'speed': WEAPON_SPEED},
+                            'ship': {'speed': PLAYER_SPEED, 'spawn_rate': POWER_UP},
+                            },
+                    }
