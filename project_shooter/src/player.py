@@ -1,16 +1,11 @@
 from circleshape import *
-from constants import PLAYER_CONSTANTS, ENEMY_CONSTANTS, SCREEN_WIDTH, SCREEN_HEIGHT
-
-class Character(CircleShape):
-    def __init__(self, x, y, score, r = PLAYER_CONSTANTS["ship"]["radius"]):
-        super().__init__(x, y, r)
-        self.rotation = 270
-        self.shoot_timer = 0
-        self.score = score
+from Space.shoot import *
+from Planet.shoot import *
+from constants import PLAYER_CONSTANTS, SCREEN_WIDTH, SCREEN_HEIGHT
 
 class Space_Player(Character):
     def __init__(self, x, y, l = None, score = 0):
-        super().__init__(x, y, score)
+        super().__init__(x, y, score, PLAYER_CONSTANTS["ship"]["radius"])
         self.level = {"rate_of_fire": 0, 
                       "ship_speed": 0, 
                       "projectiles": 0,
@@ -22,10 +17,20 @@ class Space_Player(Character):
         self.shoot_timer = 0
 
     def change_player(self):
+        print("from space to planet")
         return Planet_Player(300, SCREEN_WIDTH/2, self.level, self.score)
 
     def draw(self, screen):
         pygame.draw.polygon(screen, 'white', self.triangle(), width=2)
+
+    def drawStats(self, screen):
+        font = pygame.font.SysFont('arial', 16)
+
+        i = 1
+        for item in self.level.items():
+            text_surface = font.render(f"{item[0]}: lvl {item[1]+1}", True, (255, 255, 255))
+            screen.blit(text_surface, (1200 - text_surface.get_width(), i*20))
+            i += 1
 
     def triangle(self):
         forward = pygame.Vector2(0, 1).rotate(self.rotation)
@@ -66,16 +71,26 @@ class Space_Player(Character):
 
 class Planet_Player(Character):
     def __init__(self, x, y, l, score = 0):
-        super().__init__(x, y, score)
+        super().__init__(x, y, score, PLAYER_CONSTANTS["ship"]["radius"])
         self.level = l
         print(self.level, l)
         self.shoot_timer = 0
 
     def change_player(self):
+        print("from planet to space")
         return Space_Player(SCREEN_WIDTH/2, SCREEN_HEIGHT/2, self.level, self.score)
     
     def draw(self, screen):
         pygame.draw.polygon(screen, 'white', self.triangle(), width=2)
+
+    def drawStats(self, screen):
+        font = pygame.font.SysFont('arial', 16)
+
+        i = 1
+        for item in self.level.items():
+            text_surface = font.render(f"{item[0]}: lvl {item[1]+1}", True, (255, 255, 255))
+            screen.blit(text_surface, (1200 - text_surface.get_width(), i*20))
+            i += 1
 
     def triangle(self):
         forward = pygame.Vector2(0, 1).rotate(self.rotation)
@@ -116,69 +131,4 @@ class Planet_Player(Character):
         if not other.friendly:
             return super().collsion(other)
         return False
-    
-class Enemy(Character):
-    def __init__(self, x, y, r, diff, score = 0):
-        super().__init__(x, y, score, r)
-        self.shoot_timer = 0
-        self.difficulty = diff
-    
-    def draw(self, screen):
-        pygame.draw.polygon(screen, 'RED', self.triangle(), width=2)
-
-    def triangle(self):
-        forward = pygame.Vector2(-1, 0)
-        right = pygame.Vector2(0, -1) * self.radius / 1.5
-        a = self.position + forward * self.radius
-        b = self.position - forward * self.radius - right
-        c = self.position - forward * self.radius + right
-        return [a, b, c]    
-
-    def update(self, dt):
-        self.move(dt)
-        if self.shoot_timer > 0:
-            self.shoot_timer -= dt
-        else:
-            self.shoot_timer = 0
-        self.planet_shoot()
-        
-    def move(self, dt):
-        self.position += self.velocity * dt
-    
-    def planet_shoot(self):
-        if self.shoot_timer == 0:
-            bullet = Planet_Shoot(self.position.x-self.radius-ENEMY_CONSTANTS["weapon"]["projectile"]["radius"], self.position.y, ENEMY_CONSTANTS["weapon"]["projectile"]["radius"], False)
-            bullet.velocity = pygame.Vector2(-1, 0)*ENEMY_CONSTANTS["weapon"]["projectile"]["speed"][self.difficulty-1]
-            self.shoot_timer = ENEMY_CONSTANTS["weapon"]["rate_of_fire"][self.difficulty-1]
-
-    def collsion(self, other):
-        if other.friendly:
-            return super().collsion(other)
-        return False
-
-class Space_Shoot(CircleShape):
-    def __init__(self, x, y):
-        super().__init__(x, y, PLAYER_CONSTANTS["weapon"]["projectile"]["radius"])
-    
-    def draw(self, screen):
-        pygame.draw.circle(screen, 'white', self.position, self.radius, width=2)
-        
-    def update(self, dt, camera):
-        self.position += self.velocity*dt - camera.velocity
-
-class Planet_Shoot(CircleShape):
-    def __init__(self, x, y, r, f):
-        super().__init__(x, y, r)
-        self.friendly = f
-    
-    def draw(self, screen):
-        pygame.draw.circle(screen, 'white', self.position, self.radius, width=2)
-        
-    def update(self, dt):
-        self.position += self.velocity*dt
-
-    def collsion(self, other):
-        if self.friendly != other.friendly:
-            return super().collsion(other)
-        return False
-    
+   

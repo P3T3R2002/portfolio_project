@@ -1,9 +1,7 @@
-# this allows us to use code from
-# the open-source pygame library
-# throughout this file
 import pygame
-from Space.camera import *
 from player import *
+from camera import *
+from Space.shoot import *
 from Space.asteroid import *
 from Space.game_map import *
 from Space.asteroidfield import *
@@ -30,7 +28,6 @@ def Space(planets, player, camera):
         winner = False
         score = 0
         while not dead and not winner:
-            #print(screen)
             screen.fill('black')
             for thing in updatable:
                 thing.update(dt, camera)
@@ -45,6 +42,7 @@ def Space(planets, player, camera):
                     thing.draw(screen)
             player.draw(screen)
             planets.draw_minimap(screen)
+            player.drawStats(screen)
             camera.draw(screen)
 
             for asteroid in asteroids:

@@ -1,8 +1,7 @@
-# this allows us to use code from
-# the open-source pygame library
-# throughout this file
 import pygame
+from enemy import*
 from player import*
+from Planet.shoot import *
 
 def Planet(planet, player):
     dt = 0
@@ -32,6 +31,7 @@ def Planet(planet, player):
             for thing in drawable:
                 thing.draw(screen)
             player.draw(screen)
+            player.drawStats(screen)
 
 
             for bullet1 in shoots:

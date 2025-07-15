@@ -1,8 +1,8 @@
 import pygame
 import random
-from constants import ENEMY_CONSTANTS, SCREEN_HEIGHT
+from enemy import *
 from circleshape import *
-from player import Enemy
+from constants import ENEMY_CONSTANTS, SCREEN_HEIGHT
 
 class Planet:
     def __init__(self, dif=1):
@@ -16,7 +16,7 @@ class Planet:
 
     def update(self, dt):
         self.spawn_timer += dt
-        if self.spawn_timer > ENEMY_CONSTANTS["ship"]["spawn_rate"][self.__difficulty]:
+        if self.spawn_timer > ENEMY_CONSTANTS["ship"]["spawn_rate"][self.__difficulty-1]:
             self.spawn_timer = 0
 
             # spawn a new asteroid at a random edge

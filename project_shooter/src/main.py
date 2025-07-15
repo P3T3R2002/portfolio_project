@@ -1,8 +1,8 @@
-
 import pygame
-from constants import SCREEN_WIDTH, SCREEN_HEIGHT
+from player import *
 from Space.space import *
 from Planet.planet import *
+from constants import SCREEN_WIDTH, SCREEN_HEIGHT
 
 def main():
 

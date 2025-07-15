@@ -24,3 +24,11 @@ class CircleShape(pygame.sprite.Sprite):
     def collsion(self, other):
         distance = self.position.distance_to(other.position)
         return distance < self.radius + other.radius
+    
+
+class Character(CircleShape):
+    def __init__(self, x, y, score, r):
+        super().__init__(x, y, r)
+        self.rotation = 270
+        self.shoot_timer = 0
+        self.score = score
