@@ -17,11 +17,9 @@ def Planet(planet, player):
         Planet_Shoot.containers = (shoots, updatable, drawable)
         Enemy.containers = (enemys, updatable, drawable)
         
-
-        dead = False
-        winner = False
         score = 0
-        while not dead and not winner:
+        winner = False
+        while not winner:
             screen.fill('black')
             for thing in updatable:
                 thing.update(dt)
@@ -39,25 +37,34 @@ def Planet(planet, player):
                     if bullet1.collsion(bullet2):               
                         bullet2.kill()
                         bullet1.kill()
-                        score += 1        
+                        score += 1    
+                        player.exp += 1    
                 for enemy in enemys:
                     if enemy.collsion(bullet1): 
-                        score += 5                  
+                        score += 5   
+                        player.exp += 5               
                         enemy.kill()
                         bullet1.kill()
                 if player.collsion(bullet1):
                     print(f"Game Over!\nYour score: {score}")
-                    dead = True
+                    player.dead = True
+                    return True 
+            for enemy in enemys:
+                if player.collsion(enemy):
+                    print(f"Game Over!\nYour score: {score}")
+                    player.dead = True
+                    return True
 
-            if score > 1:
+            if score > 50 * 1 ** planet.difficulty:
                 winner = True
-                player.score += score
                 planet.completed()
                 return True
             
             for event in pygame.event.get():
                 if event.type == pygame.QUIT:
                     return None
+
+            player.score = score 
 
             pygame.display.flip()
             dt = game_time.tick(60)/1000

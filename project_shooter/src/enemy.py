@@ -5,8 +5,9 @@ from constants import ENEMY_CONSTANTS
 class Enemy(Character):
     def __init__(self, x, y, r, diff, score = 0):
         super().__init__(x, y, score, r)
-        self.shoot_timer = 0
+        self.__shoot_timer = 0
         self.difficulty = diff
+        self.friendly = False
     
     def draw(self, screen):
         pygame.draw.polygon(screen, 'RED', self.triangle(), width=2)
@@ -21,20 +22,20 @@ class Enemy(Character):
 
     def update(self, dt):
         self.move(dt)
-        if self.shoot_timer > 0:
-            self.shoot_timer -= dt
+        if self.__shoot_timer > 0:
+            self.__shoot_timer -= dt
         else:
-            self.shoot_timer = 0
+            self.__shoot_timer = 0
         self.planet_shoot()
         
     def move(self, dt):
         self.position += self.velocity * dt
     
     def planet_shoot(self):
-        if self.shoot_timer == 0:
+        if self.__shoot_timer == 0:
             bullet = Planet_Shoot(self.position.x-self.radius-ENEMY_CONSTANTS["weapon"]["projectile"]["radius"], self.position.y, ENEMY_CONSTANTS["weapon"]["projectile"]["radius"], False)
             bullet.velocity = pygame.Vector2(-1, 0)*ENEMY_CONSTANTS["weapon"]["projectile"]["speed"][self.difficulty-1]
-            self.shoot_timer = ENEMY_CONSTANTS["weapon"]["rate_of_fire"][self.difficulty-1]
+            self.__shoot_timer = ENEMY_CONSTANTS["weapon"]["rate_of_fire"][self.difficulty-1]
 
     def collsion(self, other):
         if other.friendly:

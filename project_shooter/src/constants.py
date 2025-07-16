@@ -1,3 +1,4 @@
+
 # Screen
 SCREEN_WIDTH = 1280
 SCREEN_HEIGHT = 720
@@ -13,11 +14,12 @@ PLAYER_CONSTANTS = {'weapon': {'rate_of_fire': [0.5, 0.4, 0.3, 0.2, 0.1],
                                                'speed':1500, 
                                                'radius': 5
                                                },
-                                'directions': [1, 2, 4]
+                                'directions': [1, 2, 3]
                                 },
                     'ship': {'turn_speed': 300, 
                              'radius': 20, 
-                             'speed': [200, 400, 600], 
+                             'speed': [200, 400, 600],
+                             'lvl_up': [50, 100, 200, 400, 700, 1200, 2000, 3000, 4000, 5000],
                              'power_up': POWER_UP
                              },
                     }
@@ -47,4 +49,3 @@ ASTEROID_CONSTANTS = {'min_radius': ASTEROID_MIN_RADIUS,
                       'kinds': ASTEROID_KINDS,
                       'spawn_rate': ASTEROID_SPAWN_RATE
                       }
-    
