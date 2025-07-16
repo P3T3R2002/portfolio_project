@@ -33,7 +33,7 @@ def Space(planets, player, camera):
             player.update(dt, camera)
             if planets.update(dt, camera):
                 print(f"You won!\nYour score: {player.score}")
-                return None
+                return False
 
             planets.draw(screen)
             for thing in drawable:
@@ -48,24 +48,22 @@ def Space(planets, player, camera):
                 for bullet in shoots:
                     if asteroid.collsion(bullet): 
                         score += 1  
-                        player.exp += 1                 
+                        player.score += 1                 
                         asteroid.split()
                         bullet.kill()
                 if asteroid.collsion(player):
-                    print(f"Game Over!\nYour score: {score}")
+                    print(f"Game Over!\nYour score: {player.score}")
                     player.dead = True 
-                    return
+                    return True
 
             planet = planets.collsion(player)
             if planet:
-                player.score += score
                 return planet
 
             for event in pygame.event.get():
                 if event.type == pygame.QUIT:
-                    return None
-
-            player.score = score   
+                    return False
+  
             pygame.display.flip()
             dt = game_time.tick(60)/1000
 

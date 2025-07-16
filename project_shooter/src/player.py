@@ -7,18 +7,28 @@ from constants import PLAYER_CONSTANTS, SCREEN_WIDTH, SCREEN_HEIGHT
 class Space_Player(Character):
     def __init__(self, x, y, l = None, e = 0, score = 0):
         super().__init__(x, y, score, PLAYER_CONSTANTS["ship"]["radius"])
-        self.__level = {"rate_of_fire": 1, 
-                      "ship_speed": 1,
-                      "projectiles": 1,
-                      "directions": 1, 
-                      "level": 1,
+        self.__level = {"rate_of_fire": (1, 5), 
+                      "ship_speed": (1, 3),
+                      "projectiles": (1, 3),
+                      "directions": (1, 3), 
                       }
         if l:
             self.__level = l
         self.exp = e
         self.dead = False
-        print(self.__level)
         self.__shoot_timer = 0
+
+    def get_level(self):
+        return self.__level
+    
+    def level_up(self, level):
+        print(level, self.__level[level][0])
+        self.__level[level] = (self.__level[level][0]+1, self.__level[level][1])
+        print(level, self.__level[level][0])
+
+    def revive(self):
+        self.dead = False
+        self.score = 0
 
     def change_player(self):
         print("from space to planet")
@@ -52,7 +62,7 @@ class Space_Player(Character):
 
     def update(self, dt, camera):
         keys = pygame.key.get_pressed()
-        speed = PLAYER_CONSTANTS["ship"]["speed"][self.__level["ship_speed"]-1]
+        speed = PLAYER_CONSTANTS["ship"]["speed"][self.__level["ship_speed"][0]-1]
         if self.__shoot_timer > 0:
             self.__shoot_timer -= dt
         else:
@@ -73,7 +83,7 @@ class Space_Player(Character):
         if self.__shoot_timer == 0:
             bullet = Space_Shoot(self.position[0], self.position[1])
             bullet.velocity = pygame.Vector2(0, 1).rotate(self.rotation)*PLAYER_CONSTANTS["weapon"]["projectile"]["speed"]
-            self.__shoot_timer = PLAYER_CONSTANTS["weapon"]["rate_of_fire"][self.__level["rate_of_fire"]-1]
+            self.__shoot_timer = PLAYER_CONSTANTS["weapon"]["rate_of_fire"][self.__level["rate_of_fire"][0]-1]
 
 
 
@@ -83,7 +93,6 @@ class Planet_Player(Character):
         self.__level = l
         self.exp = e
         self.dead = False
-        print(self.__level, l)
         self.__shoot_timer = 0
 
     def change_player(self):
@@ -118,8 +127,6 @@ class Planet_Player(Character):
         return [a, b, c]    
 
     def update(self, dt):
-        if PLAYER_CONSTANTS['ship']['lvl_up'][self.__level['level']-1] < self.exp:
-            self.__level["level"] += 1
         keys = pygame.key.get_pressed()
         if self.__shoot_timer > 0:
             self.__shoot_timer -= dt
@@ -137,14 +144,14 @@ class Planet_Player(Character):
             self.planet_shoot()
         
     def move(self, forward, dt):
-        self.velocity = forward * PLAYER_CONSTANTS["ship"]["speed"][self.__level["ship_speed"]-1] * dt
+        self.velocity = forward * PLAYER_CONSTANTS["ship"]["speed"][self.__level["ship_speed"][0]-1] * dt
         self.position += self.velocity 
     
     def planet_shoot(self):
         if self.__shoot_timer == 0:
             bullet = Planet_Shoot(self.position.x+self.radius+PLAYER_CONSTANTS["weapon"]["projectile"]["radius"], self.position.y, PLAYER_CONSTANTS["weapon"]["projectile"]["radius"], True)
             bullet.velocity = pygame.Vector2(0, 1).rotate(self.rotation)*PLAYER_CONSTANTS["weapon"]["projectile"]["speed"]
-            self.__shoot_timer = PLAYER_CONSTANTS["weapon"]["rate_of_fire"][self.__level["rate_of_fire"]-1]
+            self.__shoot_timer = PLAYER_CONSTANTS["weapon"]["rate_of_fire"][self.__level["rate_of_fire"][0]-1]
     
     def collsion(self, other):
         if not other.friendly:
