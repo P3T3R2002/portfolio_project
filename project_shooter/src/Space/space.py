@@ -70,6 +70,6 @@ def Space(planets, player, camera):
                     return False
   
             pygame.display.flip()
-            dt = game_time.tick(60)/1000
+            dt = game_time.tick(120)/1000
 
 

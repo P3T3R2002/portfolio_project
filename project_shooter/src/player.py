@@ -87,24 +87,24 @@ class Space_Player(Character):
         if self.__shoot_timer == 0:
             match self.__level["directions"][0]:
                 case 1:
-                    bullet = Space_Shoot(self.position.x+self.radius+PLAYER_CONSTANTS["weapon"]["projectile"]["radius"], self.position.y)
+                    bullet = Space_Shoot(self.position.x, self.position.y)
                     bullet.velocity = pygame.Vector2(0, 1).rotate(self.rotation)*PLAYER_CONSTANTS["weapon"]["projectile"]["speed"]
             
                 case 2:
-                    bullet1 = Space_Shoot(self.position.x+self.radius+PLAYER_CONSTANTS["weapon"]["projectile"]["radius"], self.position.y)
+                    bullet1 = Space_Shoot(self.position.x, self.position.y)
                     bullet1.velocity = pygame.Vector2(0, 1).rotate(self.rotation+20)*PLAYER_CONSTANTS["weapon"]["projectile"]["speed"]
             
-                    bullet2 = Space_Shoot(self.position.x+self.radius+PLAYER_CONSTANTS["weapon"]["projectile"]["radius"], self.position.y)
+                    bullet2 = Space_Shoot(self.position.x, self.position.y)
                     bullet2.velocity = pygame.Vector2(0, 1).rotate(self.rotation-20)*PLAYER_CONSTANTS["weapon"]["projectile"]["speed"]
             
                 case 3:
-                    bullet1 = Space_Shoot(self.position.x+self.radius+PLAYER_CONSTANTS["weapon"]["projectile"]["radius"], self.position.y)
+                    bullet1 = Space_Shoot(self.position.x, self.position.y)
                     bullet1.velocity = pygame.Vector2(0, 1).rotate(self.rotation)*PLAYER_CONSTANTS["weapon"]["projectile"]["speed"]
                     
-                    bullet2 = Space_Shoot(self.position.x+self.radius+PLAYER_CONSTANTS["weapon"]["projectile"]["radius"], self.position.y)
+                    bullet2 = Space_Shoot(self.position.x, self.position.y)
                     bullet2.velocity = pygame.Vector2(0, 1).rotate(self.rotation+20)*PLAYER_CONSTANTS["weapon"]["projectile"]["speed"]
                     
-                    bullet3 = Space_Shoot(self.position.x+self.radius+PLAYER_CONSTANTS["weapon"]["projectile"]["radius"], self.position.y)
+                    bullet3 = Space_Shoot(self.position.x, self.position.y)
                     bullet3.velocity = pygame.Vector2(0, 1).rotate(self.rotation-20)*PLAYER_CONSTANTS["weapon"]["projectile"]["speed"]
             
             self.__shoot_timer = PLAYER_CONSTANTS["weapon"]["rate_of_fire"][self.__level["rate_of_fire"][0]-1]
