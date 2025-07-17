@@ -8,7 +8,6 @@ def main_menu(score, player):
 
     while True:
         if pygame.mouse.get_pressed(num_buttons=5)[0]:
-            i = 1
             for item in player.get_level().items():
                 center = pygame.Vector2(SCREEN_WIDTH/2, MENU_CONSTANTS["position_Y"][item[0]])
                 center += pygame.Vector2(MENU_CONSTANTS['plus']['relative_pos'])
@@ -16,7 +15,6 @@ def main_menu(score, player):
                     score = buy_upgrade(score, item, player)
                     draw(player, score)
                     pygame.time.wait(200)
-                i += 1
             if click_inside(pygame.Vector2(pygame.mouse.get_pos()), pygame.Vector2(SCREEN_WIDTH/2, MENU_CONSTANTS["position_Y"]["play"]), MENU_CONSTANTS['font_size']['play']):
                 return score
 
@@ -37,12 +35,10 @@ def buy_upgrade(score, item, player):
         return score - PLAYER_CONSTANTS['price'][item[0]][item[1][0]-1]
     return score
 
-
 def draw(player, score):
     screen = pygame.display.get_surface()
     font = pygame.font.SysFont('arial', MENU_CONSTANTS['font_size']['level_up'])
     
-    i = 1
     screen.fill('black')
     for item in player.get_level().items():
         text_surface = font.render(f"{item[0]}: lvl {item[1]}", True, (255, 255, 255))
@@ -53,12 +49,10 @@ def draw(player, score):
         if item[1][0] != item[1][1]:
             draw_plus(screen, item)
 
-        i += 1
 
     text_surface = font.render(f"current score: {score}", True, (255, 255, 255))
     screen.blit(text_surface, (SCREEN_WIDTH/2 - text_surface.get_width(), MENU_CONSTANTS["position_Y"]["score"]))
 
-    i += 1
     font = pygame.font.SysFont('arial', MENU_CONSTANTS['font_size']['play'])
     text_surface = font.render(f"PLAY", True, (255, 255, 255))
     screen.blit(text_surface, (SCREEN_WIDTH/2 - text_surface.get_width()/2, MENU_CONSTANTS["position_Y"]["play"]))
