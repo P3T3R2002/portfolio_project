@@ -1,5 +1,5 @@
 import pygame
-from constants import*
+from constants import MAP_WIDTH, MAP_HIGHT
 
 
 class Camera:
@@ -8,7 +8,7 @@ class Camera:
         self.velocity = pygame.Vector2(0, 0)
     
     def move(self, forward, dt):
-        self.velocity = forward * PLAYER_SPEED * dt
+        self.velocity = forward * dt
         self.position -= self.velocity 
     
     def draw(self, screen):

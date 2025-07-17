@@ -1,5 +1,5 @@
 import pygame
-from constants import *
+from constants import MAP_WIDTH, MAP_HIGHT
 from circleshape import *
 from Planet.planet_map import *
 
