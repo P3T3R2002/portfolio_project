@@ -3,7 +3,6 @@ from constants import SCREEN_WIDTH, MENU_CONSTANTS, PLAYER_CONSTANTS
 
 def main_menu(score, player):
     
-    dt = 0
     game_time = pygame.time.Clock()
     draw(player, score)
 
@@ -26,7 +25,7 @@ def main_menu(score, player):
                 return None
             
         pygame.display.flip()
-        dt = game_time.tick(60)/1000
+        game_time.tick(60)
 
 def click_inside(click_pos, button_pos, r):
     distance = click_pos.distance_to(button_pos)
