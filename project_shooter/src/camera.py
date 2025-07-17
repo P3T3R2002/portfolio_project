@@ -1,5 +1,5 @@
 import pygame
-from constants import MAP_WIDTH, MAP_HIGHT
+from constants import MAP_WIDTH, MAP_HIGHT, SCREEN_WIDTH, SCREEN_HEIGHT
 
 
 class Camera:
@@ -17,9 +17,9 @@ class Camera:
     def reset_velocity(self):
         self.velocity = pygame.Vector2(0, 0)
 
-    def is_visible(self, screen, obj):
-        return (-obj.radius <= obj.position.x <= screen.get_width() + obj.radius and
-            -obj.radius <= obj.position.y <= screen.get_height() + obj.radius)
+    def is_visible(self, obj):
+        return (-obj.radius <= obj.position.x <= SCREEN_WIDTH + obj.radius and
+            -obj.radius <= obj.position.y <= SCREEN_HEIGHT + obj.radius)
     
     def set_pos(self, x, y):
         self.position = pygame.Vector2(x, y)

@@ -20,6 +20,7 @@ def Planet(planet, player):
         score = 0
         winner = False
         while not winner:
+            print('E:', len(enemys), 'S:', len(shoots), 'U:', len(updatable), 'D:', len(drawable))
             screen.fill('black')
             for thing in updatable:
                 thing.update(dt)
@@ -45,6 +46,8 @@ def Planet(planet, player):
                         player.score += 5               
                         enemy.kill()
                         bullet1.kill()
+                if bullet1.position.x > SCREEN_WIDTH and bullet1.friendly:
+                    bullet1.kill()
                 if player.collsion(bullet1):
                     print(f"Game Over!\nYour score: {player.score}")
                     player.dead = True
