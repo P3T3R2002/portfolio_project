@@ -13,7 +13,7 @@ def main():
     print(f'Screen width: {SCREEN_WIDTH}')
     print(f'Screen height: {SCREEN_HEIGHT}')
 
-    score = 3000
+    score = 30000
     player = Space_Player(SCREEN_WIDTH/2, SCREEN_HEIGHT/2)
 
     while True:
