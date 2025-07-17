@@ -7,6 +7,23 @@ SCREEN_HEIGHT = 720
 MAP_WIDTH = 20000
 MAP_HIGHT = 10000
 
+# menu
+MENU_CONSTANTS = {  'position_Y': { 'rate_of_fire': 200+1*40,       #
+                                    'projectile_num': 200+2*40,     #
+                                    'ship_speed': 200+3*40,         # font size 36->40   
+                                    'directions': 200+4*40,         #
+                                    'score': 200+5*40,              #
+                                    'play': 540,
+                                    'relative_price': 100
+                                },
+                    'plus': {'relative_pos': (50, 20),
+                             'radius': 15
+                             },
+                    'font_size': {'level_up': 36,
+                                  'play': 60
+                                  }    
+                }
+
 # Player
 POWER_UP = ["dash", "piercing"]
 PLAYER_CONSTANTS = {'weapon': {'rate_of_fire': [0.5, 0.4, 0.3, 0.2, 0.1], 
@@ -19,9 +36,13 @@ PLAYER_CONSTANTS = {'weapon': {'rate_of_fire': [0.5, 0.4, 0.3, 0.2, 0.1],
                     'ship': {'turn_speed': 300, 
                              'radius': 20, 
                              'speed': [200, 400, 600],
-                             'lvl_up': [50, 100, 200, 400, 700, 1200, 2000, 3000, 4000, 5000],
                              'power_up': POWER_UP
                              },
+                    'price': {'rate_of_fire': [100, 300, 600, 1500, 2000],
+                              'projectile_num': [1000, 2000, 4000],
+                              'ship_speed': [500, 1000, 1500],
+                              'directions': [2000, 4000, 6000]
+                              }
                     }
 
 # Enemy
@@ -36,6 +57,7 @@ ENEMY_CONSTANTS =  {'weapon': {'rate_of_fire': [2, 1.5, 1, 0.5],
                              'spawn_line': 1000
                              },
                    }
+
 
 
 # Asteroids

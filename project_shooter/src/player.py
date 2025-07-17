@@ -9,7 +9,7 @@ class Space_Player(Character):
         super().__init__(x, y, score, PLAYER_CONSTANTS["ship"]["radius"])
         self.__level = {"rate_of_fire": (1, 5), 
                       "ship_speed": (1, 3),
-                      "projectiles": (1, 3),
+                      "projectile_num": (1, 3),
                       "directions": (1, 3), 
                       }
         if l:
