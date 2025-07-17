@@ -38,10 +38,10 @@ PLAYER_CONSTANTS = {'weapon': {'rate_of_fire': [0.5, 0.4, 0.3, 0.2, 0.1],
                              'speed': [200, 400, 600],
                              'power_up': POWER_UP
                              },
-                    'price': {'rate_of_fire': [100, 300, 600, 1500, 2000],
-                              'projectile_num': [1000, 2000, 4000],
-                              'ship_speed': [500, 1000, 1500],
-                              'directions': [2000, 4000, 6000]
+                    'price': {'rate_of_fire': [100, 300, 600, 1500],
+                              'projectile_num': [1000, 2000],
+                              'ship_speed': [500, 1000],
+                              'directions': [1000, 2500]
                               }
                     }
 

@@ -27,6 +27,7 @@ def Space(planets, player, camera):
         winner = False
         score = 0
         while not winner:
+            print('A:', len(asteroids), 'S:', len(shoots), 'U:', len(updatable), 'D:', len(drawable))
             screen.fill('black')
             for thing in updatable:
                 thing.update(dt, camera)
@@ -37,7 +38,7 @@ def Space(planets, player, camera):
 
             planets.draw(screen)
             for thing in drawable:
-                if camera.is_visible(screen, thing):
+                if camera.is_visible(thing):
                     thing.draw(screen)
             player.draw(screen)
             planets.draw_minimap(screen)
@@ -55,6 +56,10 @@ def Space(planets, player, camera):
                     print(f"Game Over!\nYour score: {player.score}")
                     player.dead = True 
                     return True
+                
+            for bullet in shoots:
+                if not bullet.inside():
+                    bullet.kill()
 
             planet = planets.collsion(player)
             if planet:
@@ -65,6 +70,6 @@ def Space(planets, player, camera):
                     return False
   
             pygame.display.flip()
-            dt = game_time.tick(60)/1000
+            dt = game_time.tick(120)/1000
 
 
