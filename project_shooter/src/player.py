@@ -130,10 +130,6 @@ class Planet_Player(Character):
         print("from planet to space")
         return Space_Player(SCREEN_WIDTH/2, SCREEN_HEIGHT/2, self.__level, self.exp, self.score)
     
-    def reset(self):
-        self.position.x = 300
-        self.position.y = SCREEN_HEIGHT/2
-
     def draw(self, screen):
         pygame.draw.polygon(screen, 'white', self.triangle(), width=2)
 

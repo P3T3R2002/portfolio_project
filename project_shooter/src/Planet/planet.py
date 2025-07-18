@@ -20,7 +20,6 @@ def Planet(planet, player):
         score = 0
         winner = False
         while not winner:
-            print('E:', len(enemys), 'S:', len(shoots), 'U:', len(updatable), 'D:', len(drawable))
             screen.fill('black')
             for thing in updatable:
                 thing.update(dt)
