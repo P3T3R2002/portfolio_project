@@ -60,7 +60,7 @@ def Planet(planet, player):
             if score > 50 * 2 ** (planet.difficulty-1):
                 winner = True
                 planet.completed()
-                return True
+                return planet
             
             for event in pygame.event.get():
                 if event.type == pygame.QUIT:

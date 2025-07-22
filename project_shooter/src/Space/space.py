@@ -46,7 +46,7 @@ def Space(planets, player, camera):
 
             for asteroid in asteroids:
                 for bullet in shoots:
-                    if asteroid.collsion(bullet): 
+                    if bullet.collsion(asteroid): 
                         score += 1  
                         player.score += 1                 
                         asteroid.split()

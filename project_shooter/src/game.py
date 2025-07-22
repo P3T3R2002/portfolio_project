@@ -37,5 +37,7 @@ class Game:
         self.planet = Planet(self.planet, self.player)
         if not self.planet:
             self.exit = True
+        if self.player.dead:
+            return 
         self.planets.completed_Node(self.planet)
         self.planet = None

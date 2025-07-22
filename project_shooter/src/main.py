@@ -28,11 +28,12 @@ def main():
             game.change_player()
 
             game.start_planet()
-            game.change_player()
             if game.player.dead:
+                game.change_player()
                 break
             if game.exit:
                 return
+            game.change_player()
             
 if __name__ == "__main__":
     main()
