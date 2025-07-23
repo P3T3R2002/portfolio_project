@@ -1,7 +1,11 @@
+from hud import HUD
 from player import *
+from camera import *
+from main_menu import *
+from boss.boss import *
 from Space.space import *
 from Planet.planet import *
-from main_menu import *
+from Space.game_map import *
 from constants import SCREEN_WIDTH, SCREEN_HEIGHT
 
 class Game:
@@ -12,8 +16,10 @@ class Game:
         self.hud = HUD(self.player, self.planets)
         self.main_menu = MainMenu(self.score, self.player)
         self.camera = Camera()
+        self.boss = Boss()
         self.planet = None
         self.exit = False
+        self.boss_available = True
 
     def restart(self):
         self.planets = BST_Map_Node()
@@ -29,15 +35,20 @@ class Game:
         if self.score == None:
             self.exit = True
 
+    def start_boss(self):
+        self.player = self.player.change_to_boss()
+        self.boss.start_boss(self.player, self.hud)
+
     def change_player(self):
         self.player = self.player.change_player()
 
     def start_space(self):
         self.planet = Space(self.planets, self.player, self.camera, self.hud)
-        self.hud.change_sceen()
+        self.boss_available = self.player.boss_available
         if not self.planet:
             self.exit = True
         self.score += self.player.score
+        self.hud.change_sceen()
 
     def start_planet(self):
         self.planet = Planet(self.planet, self.player, self.hud)

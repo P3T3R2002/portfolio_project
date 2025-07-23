@@ -1,9 +1,6 @@
 import pygame
-from player import *
-from camera import *
 from Space.shoot import *
 from Space.asteroid import *
-from Space.game_map import *
 from Space.asteroidfield import *
 
 def Space(planets, player, camera, hud):
@@ -33,8 +30,8 @@ def Space(planets, player, camera, hud):
                 thing.update(dt, camera)
             player.update(dt, camera)
             if planets.update(dt, camera):
-                print(f"You won!\nYour score: {player.score}")
-                return False
+                player.boss_available = True
+                return True
 
             planets.draw(screen)
             for thing in drawable:

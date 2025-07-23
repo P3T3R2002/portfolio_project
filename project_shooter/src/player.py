@@ -1,4 +1,4 @@
-from hud import HUD
+from boss.shoot import *
 from circleshape import *
 from Space.shoot import *
 from Planet.shoot import *
@@ -33,8 +33,12 @@ class Space_Player(Character):
 
     def change_player(self):
         print("from space to planet")
-        return Planet_Player(300, SCREEN_HEIGHT/2, self.__level, self.exp, self.score)
+        return Planet_Player(SCREEN_WIDTH/2, SCREEN_HEIGHT/2, self.__level, self.score)
     
+    def change_to_boss(self):
+        print("from space to boss")
+        return BossPlayer(SCREEN_WIDTH/2, SCREEN_HEIGHT/2, self.__level, self.score)
+
     def rotate(self, dt):
         self.rotation += PLAYER_CONSTANTS["ship"]["turn_speed"]*dt   
         self.image = pygame.transform.rotate(PLAYER_CONSTANTS["ship"]["source"], -self.rotation+90) 
@@ -95,24 +99,23 @@ class Space_Player(Character):
 
 
 
-
 class Planet_Player(Character):
-    def __init__(self, x, y, l, e, score = 0):
+    def __init__(self, x, y, l, score = 0):
         super().__init__(x, y, score, PLAYER_CONSTANTS["ship"]["radius"], PLAYER_CONSTANTS["ship"]["source"])
         self.__level = l
-        self.exp = e
         self.dead = False
         self.__shoot_timer = 0
         self.bullets = self.__level["projectile_num"][0]
         self.rotation = 270
         self.image = pygame.transform.rotate(self.image, 180)
+        self.boss_available = False
 
     def get_level(self):
         return self.__level
     
     def change_player(self):
         print("from planet to space")
-        return Space_Player(SCREEN_WIDTH/2, SCREEN_HEIGHT/2, self.__level, self.exp, self.score)
+        return Space_Player(SCREEN_WIDTH/2, SCREEN_HEIGHT/2, self.__level, self.score)
     
     def update(self, dt):
         keys = pygame.key.get_pressed()
@@ -174,3 +177,76 @@ class Planet_Player(Character):
             return super().collsion(other)
         return False
    
+
+class BossPlayer(Character):
+    def __init__(self, x, y, l, score = 0):
+        super().__init__(x, y, score, PLAYER_CONSTANTS["ship"]["radius"], PLAYER_CONSTANTS["ship"]["source"])
+        self.__level = l
+        self.dead = False
+        self.__shoot_timer = 0
+        self.bullets = self.__level["projectile_num"][0]
+        self.rotation = 270
+        self.image = pygame.transform.rotate(self.image, 180)
+
+    def get_level(self):
+        return self.__level
+    
+    def update(self, dt):
+        keys = pygame.key.get_pressed()
+        if self.__shoot_timer > 0:
+            self.__shoot_timer -= dt
+        else:
+            self.__shoot_timer = 0
+        if keys[pygame.K_a]:
+            self.rotate(-dt)
+        if keys[pygame.K_d]:
+            self.rotate(dt)
+        if keys[pygame.K_w]:
+            self.move(pygame.Vector2(0, 1).rotate(self.rotation), dt)
+        elif keys[pygame.K_s]:
+            self.move(pygame.Vector2(0, 1).rotate(self.rotation), -dt)
+        if pygame.mouse.get_pressed(num_buttons=5)[0]:
+            self.boss_shoot()
+        if self.bullets != self.__level["projectile_num"][0]:
+            self.boss_shoot()
+            
+    def rotate(self, dt):
+        self.rotation += PLAYER_CONSTANTS["ship"]["turn_speed"]*dt   
+        self.image = pygame.transform.rotate(PLAYER_CONSTANTS["ship"]["source"], -self.rotation+90) 
+        self.image_rect = self.image.get_rect(center=self.position)
+
+    def move(self, forward, dt):
+        self.velocity = forward * PLAYER_CONSTANTS["ship"]["speed"][self.__level["ship_speed"][0]-1] * dt
+        self.position += self.velocity 
+        self.image_rect.center = self.position
+
+    def boss_shoot(self):
+        if self.__shoot_timer == 0:
+            match self.__level["directions"][0]:
+                case 1:
+                    bullet = Boss_Shoot(self.position.x, self.position.y, self.rotation)
+                    bullet.velocity = pygame.Vector2(0, 1).rotate(self.rotation)*PLAYER_CONSTANTS["weapon"]["projectile"]["speed"]
+            
+                case 2:
+                    bullet1 = Boss_Shoot(self.position.x, self.position.y, self.rotation+10)
+                    bullet1.velocity = pygame.Vector2(0, 1).rotate(self.rotation+10)*PLAYER_CONSTANTS["weapon"]["projectile"]["speed"]
+            
+                    bullet2 = Boss_Shoot(self.position.x, self.position.y, self.rotation-10)
+                    bullet2.velocity = pygame.Vector2(0, 1).rotate(self.rotation-10)*PLAYER_CONSTANTS["weapon"]["projectile"]["speed"]
+            
+                case 3:
+                    bullet1 = Boss_Shoot(self.position.x, self.position.y, self.rotation)
+                    bullet1.velocity = pygame.Vector2(0, 1).rotate(self.rotation)*PLAYER_CONSTANTS["weapon"]["projectile"]["speed"]
+                    
+                    bullet2 = Boss_Shoot(self.position.x, self.position.y, self.rotation+20)
+                    bullet2.velocity = pygame.Vector2(0, 1).rotate(self.rotation+20)*PLAYER_CONSTANTS["weapon"]["projectile"]["speed"]
+                    
+                    bullet3 = Boss_Shoot(self.position.x, self.position.y, self.rotation-20)
+                    bullet3.velocity = pygame.Vector2(0, 1).rotate(self.rotation-20)*PLAYER_CONSTANTS["weapon"]["projectile"]["speed"]
+            
+            self.__shoot_timer = PLAYER_CONSTANTS["weapon"]["rate_of_fire"][self.__level["rate_of_fire"][0]-1]
+            self.bullets -= 1
+            if self.bullets > 0:
+                self.__shoot_timer = 0.02
+            else:
+                self.bullets = self.__level["projectile_num"][0]
