@@ -19,6 +19,7 @@ class Game:
         self.planets = BST_Map_Node()
         self.camera = Camera()
         self.player.revive()
+        self.hud.update_minimap(self.planets)
         self.hud.update_score(self.score)
         self.hud.reset_sceen()
         self.main_menu.player = self.player

@@ -83,6 +83,7 @@ class FightHud(HudItem):
 
     def set_max_score(self, max_score):
         self.max_score = max_score
+        self.current_score = 0
 
     def update(self, score):
         self.current_score = score
