@@ -5,6 +5,7 @@ from Planet.shoot import *
 
 def Planet(planet, player, hud):
     dt = 0
+    hud.fight.set_max_score(50 * 2 ** (planet.difficulty-1))
     screen = pygame.display.get_surface()
     game_time = pygame.time.Clock()
 
@@ -39,12 +40,14 @@ def Planet(planet, player, hud):
                         bullet1.kill()
                         score += 1    
                         player.score += 1 
-                        hud.update_score(player.score) 
+                        hud.update_score(player.score)
+                        hud.update_fight(score)   
                 for enemy in enemys:
                     if enemy.collsion(bullet1): 
                         score += 5   
                         player.score += 5  
-                        hud.update_score(player.score)             
+                        hud.update_score(player.score)  
+                        hud.update_fight(score)  
                         enemy.kill()
                         bullet1.kill()
                 if bullet1.position.x > SCREEN_WIDTH and bullet1.friendly:

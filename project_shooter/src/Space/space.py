@@ -26,7 +26,7 @@ def Space(planets, player, camera, hud):
 
         winner = False
         score = 0
-        hud.update(player)
+        hud.update_stats(player)
         while not winner:
             screen.fill('black')
             for thing in updatable:

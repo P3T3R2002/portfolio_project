@@ -106,7 +106,6 @@ class Planet_Player(Character):
         self.bullets = self.__level["projectile_num"][0]
         self.rotation = 270
         self.image = pygame.transform.rotate(self.image, 180)
-        self.hud = HUD(self)
 
     def get_level(self):
         return self.__level
@@ -115,9 +114,6 @@ class Planet_Player(Character):
         print("from planet to space")
         return Space_Player(SCREEN_WIDTH/2, SCREEN_HEIGHT/2, self.__level, self.exp, self.score)
     
-    def drawStats(self, screen):
-        self.hud.draw(screen)
-
     def update(self, dt):
         keys = pygame.key.get_pressed()
         if self.__shoot_timer > 0:

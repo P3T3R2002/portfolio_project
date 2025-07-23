@@ -20,6 +20,7 @@ class Game:
         self.camera = Camera()
         self.player.revive()
         self.hud.update_score(self.score)
+        self.hud.reset_sceen()
         self.main_menu.player = self.player
 
     def start_main_menu(self):
@@ -32,12 +33,14 @@ class Game:
 
     def start_space(self):
         self.planet = Space(self.planets, self.player, self.camera, self.hud)
+        self.hud.change_sceen()
         if not self.planet:
             self.exit = True
         self.score += self.player.score
 
     def start_planet(self):
         self.planet = Planet(self.planet, self.player, self.hud)
+        self.hud.change_sceen()
         if not self.planet:
             self.exit = True
         if self.player.dead:

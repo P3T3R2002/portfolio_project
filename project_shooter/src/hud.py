@@ -1,6 +1,6 @@
 import pygame
 from main_menu import Text
-from constants import MAP_HIGHT, MAP_WIDTH
+from constants import MAP_HIGHT, MAP_WIDTH, SCREEN_WIDTH
 
 class HudText(Text):
     def __init__(self, x, y, text):
@@ -8,9 +8,9 @@ class HudText(Text):
         self.position.x -=  self.text_surface.get_width()
 
 class HudItem:
-    def __init__(self, x, y):
+    def __init__(self, x, y, visible = True):
         self.position = pygame.Vector2(x, y)
-        self.visible = True
+        self.visible = visible
 
     def draw(self, screen):
         pass
@@ -44,7 +44,6 @@ class Minimap(HudItem):
         self.planets = []
         self.__add_planet(planets)
 
-
 class Stats(HudItem):
     def __init__(self, player):
         super().__init__(1200, 20)
@@ -69,26 +68,60 @@ class Stats(HudItem):
             for text in self.stats.values():
                 text.draw(screen)
 
+class FightHud(HudItem):
+    def __init__(self, x, y, max_score = 0):
+        super().__init__(x, y, False)
+        self.max_score = max_score
+        self.current_score = 0
+
+    def draw(self, screen):
+        pygame.draw.rect(screen, "red", (self.position, (SCREEN_WIDTH-300*2, 50)), 3)
+
+        length = (SCREEN_WIDTH-3*200)/self.max_score*self.current_score
+        print(length)
+        pygame.draw.rect(screen, "red", (self.position, (length, 50)))
+
+    def set_max_score(self, max_score):
+        self.max_score = max_score
+
+    def update(self, score):
+        self.current_score = score
+
+
+
 class HUD:
     def __init__(self, player, planet = None):
         self.stats = Stats(player)
         self.minimap = None
-        if planet:
-            self.minimap = Minimap(planet)
+        self.minimap = Minimap(planet)
+        self.fight = FightHud(300, 10)
 
     def update_score(self, value):
         self.stats.update_score(value)
 
-    def update(self, player):
+    def update_stats(self, player):
         self.stats.update(player)
+
+    def update_fight(self, score):
+        self.fight.update(score)
 
     def update_minimap(self, planets):
         self.minimap.update(planets)
 
+    def change_sceen(self):
+        self.minimap.visible = not self.minimap.visible
+        self.fight.visible = not self.fight.visible
+
+    def reset_sceen(self):
+        self.minimap.visible = True
+        self.fight.visible = False
 
 
             
     def draw(self, screen):
-        self.stats.draw(screen)
-        if self.minimap:
+        if self.stats.visible:
+            self.stats.draw(screen)
+        if self.minimap.visible:
             self.minimap.draw(screen)
+        if self.fight.visible:
+            self.fight.draw(screen)
