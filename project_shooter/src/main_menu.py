@@ -15,18 +15,29 @@ class Plus(CircleShape):
         return distance < self.radius
 
 class Text:
-    def __init__(self, x, y, text, price = False):
-        self.font = pygame.font.SysFont('arial', MENU_CONSTANTS['font_size']['level_up'])
+    def __init__(self, x, y, text, font):
+        self.font = pygame.font.SysFont('arial', MENU_CONSTANTS['font_size'][font])
         self.text_surface = self.font.render(text, True, (255, 255, 255))
-        self.position = None
-        if not price:
-            self.position = pygame.Vector2(x - self.text_surface.get_width(), y)
-        else:
-            self.position = pygame.Vector2(x + MENU_CONSTANTS["position_Y"]['relative_price'], y)
+        self.position = pygame.Vector2(x, y)
         
     def draw(self, screen):
         screen.blit(self.text_surface, (self.position.x, self.position.y))
 
+
+class PriceText(Text):
+    def __init__(self, x, y, text):
+        super().__init__(x, y, text, "level_up")
+        self.position.x += MENU_CONSTANTS["position_Y"]['relative_price']
+
+class UpgradeInfoText(Text):
+    def __init__(self, x, y, text):
+        super().__init__(x, y, text, "level_up")
+        self.position.x -= self.text_surface.get_width()
+
+class ButtonText(Text):
+    def __init__(self, x, y, text):
+        super().__init__(x, y, text, "button")
+        self.position.x -= self.text_surface.get_width()/2
 
 class MainMenu:
     def __init__(self, score, player):
@@ -40,12 +51,18 @@ class MainMenu:
     def __add_text(self):
         for item in self.player.get_level().items():
             row = []
-            row.append(Text(SCREEN_WIDTH/2, MENU_CONSTANTS["position_Y"][item[0]], f"{item[0]}: lvl {item[1]}"))
+            row.append(UpgradeInfoText(SCREEN_WIDTH/2, MENU_CONSTANTS["position_Y"][item[0]], f"{item[0]}: lvl {item[1]}"))
             if item[1][0] != item[1][1]:
-                row.append(Text(SCREEN_WIDTH/2, MENU_CONSTANTS["position_Y"][item[0]], f"{PLAYER_CONSTANTS['price'][item[0]][item[1][0]-1]}", True))
+                row.append(PriceText(SCREEN_WIDTH/2, MENU_CONSTANTS["position_Y"][item[0]], f"{PLAYER_CONSTANTS['price'][item[0]][item[1][0]-1]}"))
             self.texts[item[0]] = row
 
-        self.texts['score'] = [Text(SCREEN_WIDTH/2, MENU_CONSTANTS["position_Y"]['score'], f"current score: {self.score}")]
+        self.texts['score'] = [UpgradeInfoText(SCREEN_WIDTH/2, MENU_CONSTANTS["position_Y"]['score'], f"current score: {self.score}")]
+
+        self.texts['button'] = [
+            ButtonText(SCREEN_WIDTH/2, MENU_CONSTANTS["position_Y"]["play"], "PLAY"),
+            ButtonText(SCREEN_WIDTH/2, MENU_CONSTANTS["position_Y"]["exit"], "EXIT")
+        ]
+
 
     def __add_plus(self):
         for item in self.player.get_level().items():
@@ -56,11 +73,11 @@ class MainMenu:
     def __update_texts(self, text):
         item = self.player.get_level()[text]
         row = []
-        row.append(Text(SCREEN_WIDTH/2, MENU_CONSTANTS["position_Y"][text], f"{text}: lvl {item}"))
+        row.append(UpgradeInfoText(SCREEN_WIDTH/2, MENU_CONSTANTS["position_Y"][text], f"{text}: lvl {item}"))
         if item[0] != item[1]:
-            row.append(Text(SCREEN_WIDTH/2, MENU_CONSTANTS["position_Y"][text], f"{PLAYER_CONSTANTS['price'][text][item[0]-1]}", True))
+            row.append(PriceText(SCREEN_WIDTH/2, MENU_CONSTANTS["position_Y"][text], f"{PLAYER_CONSTANTS['price'][text][item[0]-1]}"))
         self.texts[text] = row
-        self.texts['score'] = [Text(SCREEN_WIDTH/2, MENU_CONSTANTS["position_Y"]['score'], f"current score: {self.score}")]
+        self.texts['score'] = [UpgradeInfoText(SCREEN_WIDTH/2, MENU_CONSTANTS["position_Y"]['score'], f"current score: {self.score}")]
 
     def buy_upgrade(self, plus):
         text = plus.text
@@ -85,45 +102,39 @@ class MainMenu:
             if plus.visible:
                 plus.draw(screen)
 
-        font = pygame.font.SysFont('arial', MENU_CONSTANTS['font_size']['play'])
-        text_surface = font.render(f"PLAY", True, (255, 255, 255))
-        screen.blit(text_surface, (SCREEN_WIDTH/2 - text_surface.get_width()/2, MENU_CONSTANTS["position_Y"]["play"]))
-        text_surface = font.render(f"EXIT", True, (255, 255, 255))
-        screen.blit(text_surface, (SCREEN_WIDTH/2 - text_surface.get_width()/2, MENU_CONSTANTS["position_Y"]["exit"]))
-
         pygame.display.flip()
         return
 
-def main_menu(score, player):
-        screen = pygame.display.get_surface()
-        game_time = pygame.time.Clock()
+    def main_menu(self, score, player):
+            screen = pygame.display.get_surface()
+            game_time = pygame.time.Clock()
 
-        menu = MainMenu(score, player)
-        menu.draw(screen)
+            menu = MainMenu(score, player)
+            menu.draw(screen)
 
-        while True:
-            if pygame.mouse.get_pressed(num_buttons=5)[0]:
-                for plus in menu.plus:
-                    if plus.click_inside(pygame.Vector2(pygame.mouse.get_pos())):
-                        menu.buy_upgrade(plus)
-                        menu.draw(screen)
-                        pygame.time.wait(200)
-                if click_inside_play(pygame.Vector2(pygame.mouse.get_pos())):
-                    return menu.score
-                if click_inside_exit(pygame.Vector2(pygame.mouse.get_pos())):
-                    return None
+            while True:
+                if pygame.mouse.get_pressed(num_buttons=5)[0]:
+                    for plus in menu.plus:
+                        if plus.click_inside(pygame.Vector2(pygame.mouse.get_pos())):
+                            menu.buy_upgrade(plus)
+                            menu.draw(screen)
+                            pygame.time.wait(200)
+                    if click_inside_play(pygame.Vector2(pygame.mouse.get_pos())):
+                        return menu.score
+                    if click_inside_exit(pygame.Vector2(pygame.mouse.get_pos())):
+                        return None
 
-            for event in pygame.event.get():
-                if event.type == pygame.QUIT:
-                    return None
-                
-            pygame.display.flip()
-            game_time.tick(60)
+                for event in pygame.event.get():
+                    if event.type == pygame.QUIT:
+                        return None
+                    
+                pygame.display.flip()
+                game_time.tick(60)
 
 
 def click_inside_play(click_pos):
     distance = click_pos.distance_to(pygame.Vector2(SCREEN_WIDTH/2, MENU_CONSTANTS["position_Y"]["play"]))
-    return distance < MENU_CONSTANTS['font_size']['play']
+    return distance < MENU_CONSTANTS['font_size']['button']
 def click_inside_exit(click_pos):
     distance = click_pos.distance_to(pygame.Vector2(SCREEN_WIDTH/2, MENU_CONSTANTS["position_Y"]["exit"]))
-    return distance < MENU_CONSTANTS['font_size']['play']
+    return distance < MENU_CONSTANTS['font_size']['button']

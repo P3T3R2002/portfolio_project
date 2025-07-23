@@ -1,3 +1,4 @@
+from hud import HUD
 from circleshape import *
 from Space.shoot import *
 from Planet.shoot import *
@@ -24,9 +25,7 @@ class Space_Player(Character):
         return self.__level
     
     def level_up(self, level):
-        print(level, self.__level[level][0])
         self.__level[level] = (self.__level[level][0]+1, self.__level[level][1])
-        print(level, self.__level[level][0])
 
     def revive(self):
         self.dead = False
@@ -36,18 +35,6 @@ class Space_Player(Character):
         print("from space to planet")
         return Planet_Player(300, SCREEN_HEIGHT/2, self.__level, self.exp, self.score)
     
-    def drawStats(self, screen):
-        font = pygame.font.SysFont('arial', 16)
-
-        i = 1
-        for item in self.__level.items():
-            text_surface = font.render(f"{item[0]}: lvl {item[1]}", True, (255, 255, 255))
-            screen.blit(text_surface, (1200 - text_surface.get_width(), i*20))
-            i += 1
-
-        text_surface = font.render(f"current score: {self.score}", True, (255, 255, 255))
-        screen.blit(text_surface, (1200 - text_surface.get_width(), i*20))
-
     def rotate(self, dt):
         self.rotation += PLAYER_CONSTANTS["ship"]["turn_speed"]*dt   
         self.image = pygame.transform.rotate(PLAYER_CONSTANTS["ship"]["source"], -self.rotation+90) 
@@ -119,22 +106,17 @@ class Planet_Player(Character):
         self.bullets = self.__level["projectile_num"][0]
         self.rotation = 270
         self.image = pygame.transform.rotate(self.image, 180)
+        self.hud = HUD(self)
 
+    def get_level(self):
+        return self.__level
+    
     def change_player(self):
         print("from planet to space")
         return Space_Player(SCREEN_WIDTH/2, SCREEN_HEIGHT/2, self.__level, self.exp, self.score)
     
     def drawStats(self, screen):
-        font = pygame.font.SysFont('arial', 16)
-
-        i = 1
-        for item in self.__level.items():
-            text_surface = font.render(f"{item[0]}: lvl {item[1]}", True, (255, 255, 255))
-            screen.blit(text_surface, (1200 - text_surface.get_width(), i*20))
-            i += 1
-       
-        text_surface = font.render(f"current score: {self.score}", True, (255, 255, 255))
-        screen.blit(text_surface, (1200 - text_surface.get_width(), i*20))
+        self.hud.draw(screen)
 
     def update(self, dt):
         keys = pygame.key.get_pressed()

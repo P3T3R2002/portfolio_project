@@ -6,7 +6,7 @@ from Space.asteroid import *
 from Space.game_map import *
 from Space.asteroidfield import *
 
-def Space(planets, player, camera):
+def Space(planets, player, camera, hud):
     dt = 0
     screen = pygame.display.get_surface()
     game_time = pygame.time.Clock()
@@ -26,6 +26,7 @@ def Space(planets, player, camera):
 
         winner = False
         score = 0
+        hud.update(player)
         while not winner:
             screen.fill('black')
             for thing in updatable:
@@ -40,15 +41,15 @@ def Space(planets, player, camera):
                 if camera.is_visible(thing):
                     thing.draw(screen)
             player.draw(screen)
-            planets.draw_minimap(screen)
-            player.drawStats(screen)
+            hud.draw(screen)
             camera.draw(screen)
 
             for asteroid in asteroids:
                 for bullet in shoots:
                     if bullet.collsion(asteroid): 
                         score += 1  
-                        player.score += 1                 
+                        player.score += 1  
+                        hud.update_score(player.score)               
                         asteroid.split()
                         bullet.kill()
                 if asteroid.collsion(player):

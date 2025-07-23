@@ -54,22 +54,7 @@ class BST_Map_Node(CircleShape):
             self.left.draw(screen)
         if self.right:
             self.right.draw(screen)
-
-    def draw_minimap(self, screen):
-        pygame.draw.rect(screen, "yellow", pygame.Rect((0, 0), (200, 100)), 2)
-        pos = ((self.start_pos.x + MAP_WIDTH/2)/100, (self.start_pos.y + (MAP_HIGHT+200))/100)
-        color = None
-        if self.val.get_completion():
-            color = 'Green'
-        elif self.available:
-            color = 'Blue'
-        else:
-            color = 'Red'
-        pygame.draw.circle(screen, color, pos, 3)
-        if self.left:
-            self.left.draw_minimap(screen)
-        if self.right:
-            self.right.draw_minimap(screen)     
+   
         
     def collsion(self, other):
         if super().collsion(other):

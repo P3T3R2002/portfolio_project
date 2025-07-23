@@ -22,9 +22,16 @@ MENU_CONSTANTS = {  'position_Y': { 'rate_of_fire': 200+1*40,       #
                              'source': pygame.transform.scale(pygame.image.load("src/assets/plus.png"), (15*2, 15*2))
                              },
                     'font_size': {'level_up': 36,
-                                  'play': 60
-                                  }    
-                }
+                                  'button': 60,
+                                  'hud': 16
+                                  },
+                    'hud_pos_Y': {'rate_of_fire': 1*20,       #
+                                    'projectile_num': 2*20,     #
+                                    'ship_speed': 3*20,         # font size 16->20   
+                                    'directions': 4*20,         #
+                                    'score': 5*20
+                                    }  
+}
 
 # Player
 POWER_UP = ["dash", "piercing"]
