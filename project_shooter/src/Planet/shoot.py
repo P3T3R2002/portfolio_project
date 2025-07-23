@@ -11,10 +11,7 @@ class Planet_Shoot(CircleShape):
         self.image = pygame.transform.rotate(self.image, -rotation+180)
         self.image_rect = self.image.get_rect(center=self.position)
         self.friendly = f
-    
-    def draw(self, screen):
-        screen.blit(self.image, self.image_rect)
-        
+            
     def update(self, dt):
         self.position += self.velocity*dt
         self.image_rect.center = self.position

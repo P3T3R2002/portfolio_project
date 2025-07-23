@@ -19,8 +19,7 @@ class CircleShape(pygame.sprite.Sprite):
             self.image_rect = self.image.get_rect(center=self.position)
 
     def draw(self, screen):
-        # sub-classes must override
-        pass
+        screen.blit(self.image, self.image_rect)
 
     def update(self, dt):
         # sub-classes must override

@@ -6,9 +6,6 @@ from constants import ASTEROID_CONSTANTS
 class Asteroid(CircleShape):
     def __init__(self, x, y, radius, image_url = None):
         super().__init__(x, y, radius, image_url)
-    
-    def draw(self, screen):
-        screen.blit(self.image, self.image_rect)
         
     def update(self, dt, camera):
         self.position += self.velocity*dt - camera.velocity

@@ -6,10 +6,7 @@ class Space_Shoot(CircleShape):
         super().__init__(x, y, PLAYER_CONSTANTS["weapon"]["projectile"]["radius"], PLAYER_CONSTANTS['weapon']['projectile']['source'])
         self.image = pygame.transform.rotate(self.image, -rotation+180)
         self.image_rect = self.image.get_rect(center=self.position)
-    
-    def draw(self, screen):
-        screen.blit(self.image, self.image_rect)
-        
+            
     def update(self, dt, camera):
         self.position += self.velocity*dt - camera.velocity
         self.image_rect.center = self.position

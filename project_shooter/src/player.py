@@ -36,9 +36,6 @@ class Space_Player(Character):
         print("from space to planet")
         return Planet_Player(300, SCREEN_HEIGHT/2, self.__level, self.exp, self.score)
     
-    def draw(self, screen):
-        screen.blit(self.image, self.image_rect)
-
     def drawStats(self, screen):
         font = pygame.font.SysFont('arial', 16)
 
@@ -127,9 +124,6 @@ class Planet_Player(Character):
         print("from planet to space")
         return Space_Player(SCREEN_WIDTH/2, SCREEN_HEIGHT/2, self.__level, self.exp, self.score)
     
-    def draw(self, screen):
-        screen.blit(self.image, self.image_rect)
-
     def drawStats(self, screen):
         font = pygame.font.SysFont('arial', 16)
 
