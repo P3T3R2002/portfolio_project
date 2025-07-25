@@ -4,6 +4,7 @@ from enemy import *
 from circleshape import *
 from constants import ENEMY_CONSTANTS, SCREEN_HEIGHT
 
+
 class Planet:
     def __init__(self, dif=1):
         self.__completed = False

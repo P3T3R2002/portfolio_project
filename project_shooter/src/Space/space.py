@@ -1,12 +1,9 @@
 import pygame
-from player import *
-from camera import *
 from Space.shoot import *
 from Space.asteroid import *
-from Space.game_map import *
 from Space.asteroidfield import *
 
-def Space(planets, player, camera):
+def Space(planets, player, camera, hud):
     dt = 0
     screen = pygame.display.get_surface()
     game_time = pygame.time.Clock()
@@ -26,35 +23,35 @@ def Space(planets, player, camera):
 
         winner = False
         score = 0
+        hud.update_stats(player)
         while not winner:
-            print('A:', len(asteroids), 'S:', len(shoots), 'U:', len(updatable), 'D:', len(drawable))
             screen.fill('black')
             for thing in updatable:
                 thing.update(dt, camera)
             player.update(dt, camera)
             if planets.update(dt, camera):
-                print(f"You won!\nYour score: {player.score}")
-                return False
+                player.boss_available = True
+                return True
 
             planets.draw(screen)
             for thing in drawable:
                 if camera.is_visible(thing):
                     thing.draw(screen)
             player.draw(screen)
-            planets.draw_minimap(screen)
-            player.drawStats(screen)
+            hud.draw(screen)
             camera.draw(screen)
 
             for asteroid in asteroids:
                 for bullet in shoots:
-                    if asteroid.collsion(bullet): 
+                    if bullet.collsion(asteroid): 
                         score += 1  
-                        player.score += 1                 
+                        player.score += 1  
+                        hud.update_score(player.score)               
                         asteroid.split()
                         bullet.kill()
                 if asteroid.collsion(player):
                     print(f"Game Over!\nYour score: {player.score}")
-                    player.dead = True 
+                    player.dead = True
                     return True
                 
             for bullet in shoots:
@@ -67,7 +64,7 @@ def Space(planets, player, camera):
 
             for event in pygame.event.get():
                 if event.type == pygame.QUIT:
-                    return False
+                    return None
   
             pygame.display.flip()
             dt = game_time.tick(120)/1000

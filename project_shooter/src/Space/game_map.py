@@ -1,11 +1,11 @@
 import pygame
-from constants import MAP_WIDTH, MAP_HIGHT
+from constants import MAP_WIDTH, MAP_HIGHT, PLANET_CONSTANTS
 from circleshape import *
 from Planet.planet_map import *
 
 class BST_Map_Node(CircleShape):
     def __init__(self, dif=1, num = 0):
-        super().__init__(-MAP_WIDTH/(2**(dif-1)+1)*(num+1) + MAP_WIDTH/2, -(MAP_HIGHT-1000)/4*dif, 200)
+        super().__init__(-MAP_WIDTH/(2**(dif-1)+1)*(num+1) + MAP_WIDTH/2, -(MAP_HIGHT-1000)/4*dif, PLANET_CONSTANTS['radius'], PLANET_CONSTANTS['source'])
         self.start_pos = pygame.Vector2(self.position.x, self.position.y)
         self.left = None
         self.right = None
@@ -15,6 +15,9 @@ class BST_Map_Node(CircleShape):
         else:
             self.available = False
         self.__generate_map(4, num)
+        
+        self.circle_surface = pygame.Surface((self.radius * 2, self.radius * 2), pygame.SRCALPHA)
+    
 
     def __generate_map(self, max_diff, num):
         dif = self.val.get_difficulty()
@@ -37,34 +40,21 @@ class BST_Map_Node(CircleShape):
                 self.right.completed_Node(planet)
 
     def draw(self, screen):
-        color = None
+        screen.blit(self.image, self.image_rect)
         if self.val.get_completion():
-            color = 'Green'
-        elif self.available:
-            color = 'Blue'
-        else:
-            color = 'Red'
-        pygame.draw.circle(screen, color, self.position, self.radius)
+            color = (0, 255, 0, 100)
+            pygame.draw.circle(self.circle_surface, color, (self.radius, self.radius), self.radius)
+            screen.blit(self.circle_surface, (self.position[0] - self.radius, self.position[1] - self.radius))
+        elif not self.available:
+            color = (255, 0, 0, 100)
+            pygame.draw.circle(self.circle_surface, color, (self.radius, self.radius), self.radius)
+            screen.blit(self.circle_surface, (self.position[0] - self.radius, self.position[1] - self.radius))
+
         if self.left:
             self.left.draw(screen)
         if self.right:
             self.right.draw(screen)
-
-    def draw_minimap(self, screen):
-        pygame.draw.rect(screen, "yellow", pygame.Rect((0, 0), (200, 100)), 2)
-        pos = ((self.start_pos.x + MAP_WIDTH/2)/100, (self.start_pos.y + (MAP_HIGHT+200))/100)
-        color = None
-        if self.val.get_completion():
-            color = 'Green'
-        elif self.available:
-            color = 'Blue'
-        else:
-            color = 'Red'
-        pygame.draw.circle(screen, color, pos, 3)
-        if self.left:
-            self.left.draw_minimap(screen)
-        if self.right:
-            self.right.draw_minimap(screen)     
+   
         
     def collsion(self, other):
         if super().collsion(other):
@@ -86,6 +76,7 @@ class BST_Map_Node(CircleShape):
       
     def update(self, dt, camera):
         self.position += self.velocity*dt - camera.velocity
+        self.image_rect.center = self.position
 
         winner1 = False
         winner2 = False
@@ -101,11 +92,5 @@ class BST_Map_Node(CircleShape):
             return True
         return False
          
-    def reset_pos(self):
-        self.position = pygame.Vector2(self.start_pos.x, self.start_pos.y)
-        if self.left:
-            self.left.reset_pos()
-        if self.right:
-            self.right.reset_pos()
 
 
