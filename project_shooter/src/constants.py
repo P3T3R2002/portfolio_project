@@ -71,6 +71,10 @@ ENEMY_CONSTANTS =  {'weapon': {'rate_of_fire': [2, 1.5, 1, 0.5],
                              },
                    }
 
+# Boss
+BOSS_CONSTANTS = {'radius': 100, 
+                  "source":  pygame.transform.scale(pygame.image.load("src/assets/enemy_ship.png"), (100*2, 100*2))
+                  }
 
 
 # Asteroids

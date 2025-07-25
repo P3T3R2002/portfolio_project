@@ -22,8 +22,8 @@ class CircleShape(pygame.sprite.Sprite):
         screen.blit(self.image, self.image_rect)
 
     def update(self, dt):
-        # sub-classes must override
-        pass
+        self.position += self.velocity*dt
+        self.image_rect.center = self.position
 
     def collsion(self, other):
         distance = self.position.distance_to(other.position)

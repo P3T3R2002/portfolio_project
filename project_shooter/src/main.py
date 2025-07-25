@@ -13,33 +13,40 @@ def main():
     game = Game()
 
     while True:
-        game.restart()
-        game.start_main_menu()
-        if game.exit:
-            return
-        if game.boss_available:
-            game.start_boss()
-            if game.player.dead:
-                continue
-        
-        while True:
-                game.start_space()
-                if game.boss_available:
-                    game.boss_encounter()
-                    break
-                if game.player.dead:
-                    break
-                if game.exit:
-                    return
+        if game.winner:
+            game.player_won()
+            if game.exit:
+                return
+        else:
+            game.restart()
+            game.start_main_menu()
+            if game.exit:
+                return
+            if game.boss_available:
+                game.start_boss()
                 game.change_player()
-
-                game.start_planet()
-                if game.player.dead:
+            if game.exit:
+                return
+            
+            while not game.boss_available:
+                    game.start_space()
+                    if game.boss_available:
+                        game.start_boss()
+                        game.change_player()
+                        break
+                    if game.player.dead:
+                        break
+                    if game.exit:
+                        return
                     game.change_player()
-                    break
-                if game.exit:
-                    return
-                game.change_player()
+
+                    game.start_planet()
+                    if game.player.dead:
+                        game.change_player()
+                        break
+                    if game.exit:
+                        return
+                    game.change_player()
             
 if __name__ == "__main__":
     main()

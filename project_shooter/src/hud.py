@@ -78,7 +78,6 @@ class FightHud(HudItem):
         pygame.draw.rect(screen, "red", (self.position, (SCREEN_WIDTH-300*2, 50)), 3)
 
         length = (SCREEN_WIDTH-3*200)/self.max_score*self.current_score
-        print(length)
         pygame.draw.rect(screen, "red", (self.position, (length, 50)))
 
     def set_max_score(self, max_score):
@@ -87,7 +86,7 @@ class FightHud(HudItem):
 
     def update(self, score):
         self.current_score = score
-
+        print(self.max_score, self.current_score)
 
 
 class HUD:
@@ -117,8 +116,11 @@ class HUD:
         self.minimap.visible = True
         self.fight.visible = False
 
+    def boss_hud(self):
+        self.stats.visible = False
+        self.minimap.visible = False
+        self.fight.visible = True
 
-            
     def draw(self, screen):
         if self.stats.visible:
             self.stats.draw(screen)

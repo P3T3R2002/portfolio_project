@@ -3,9 +3,8 @@ from enemy import*
 from player import*
 from Planet.shoot import *
 
-def Planet(planet, player, hud):
+def go_Planet(planet, player, hud):
     dt = 0
-    hud.fight.set_max_score(50 * 2 ** (planet.difficulty-1))
     screen = pygame.display.get_surface()
     game_time = pygame.time.Clock()
 

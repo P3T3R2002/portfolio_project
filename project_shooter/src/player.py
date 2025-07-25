@@ -6,7 +6,7 @@ from constants import PLAYER_CONSTANTS, SCREEN_WIDTH, SCREEN_HEIGHT
 
 
 class Space_Player(Character):
-    def __init__(self, x, y, l = None, e = 0, score = 0):
+    def __init__(self, x, y, l = None, score = 0):
         super().__init__(x, y, score, PLAYER_CONSTANTS["ship"]["radius"], PLAYER_CONSTANTS["ship"]["source"])
         self.__level = {"rate_of_fire": (1, 5), 
                       "ship_speed": (1, 3),
@@ -15,11 +15,11 @@ class Space_Player(Character):
                       }
         if l:
             self.__level = l
-        self.exp = e
         self.dead = False
         self.__shoot_timer = 0
         self.bullets = self.__level["projectile_num"][0]
         self.image = pygame.transform.rotate(self.image, -90)
+        self.boss_available = False
 
     def get_level(self):
         return self.__level
@@ -108,7 +108,6 @@ class Planet_Player(Character):
         self.bullets = self.__level["projectile_num"][0]
         self.rotation = 270
         self.image = pygame.transform.rotate(self.image, 180)
-        self.boss_available = False
 
     def get_level(self):
         return self.__level
@@ -182,7 +181,9 @@ class BossPlayer(Character):
     def __init__(self, x, y, l, score = 0):
         super().__init__(x, y, score, PLAYER_CONSTANTS["ship"]["radius"], PLAYER_CONSTANTS["ship"]["source"])
         self.__level = l
+        self.winner = False
         self.dead = False
+        self.friendly = True
         self.__shoot_timer = 0
         self.bullets = self.__level["projectile_num"][0]
         self.rotation = 270
@@ -190,6 +191,10 @@ class BossPlayer(Character):
 
     def get_level(self):
         return self.__level
+    
+    def change_player(self):
+        print("from planet to space")
+        return Space_Player(SCREEN_WIDTH/2, SCREEN_HEIGHT/2, self.__level, self.score)
     
     def update(self, dt):
         keys = pygame.key.get_pressed()
@@ -224,24 +229,24 @@ class BossPlayer(Character):
         if self.__shoot_timer == 0:
             match self.__level["directions"][0]:
                 case 1:
-                    bullet = Boss_Shoot(self.position.x, self.position.y, self.rotation)
+                    bullet = Boss_Bullet(self.position.x, self.position.y, self.rotation)
                     bullet.velocity = pygame.Vector2(0, 1).rotate(self.rotation)*PLAYER_CONSTANTS["weapon"]["projectile"]["speed"]
             
                 case 2:
-                    bullet1 = Boss_Shoot(self.position.x, self.position.y, self.rotation+10)
+                    bullet1 = Boss_Bullet(self.position.x, self.position.y, self.rotation+10)
                     bullet1.velocity = pygame.Vector2(0, 1).rotate(self.rotation+10)*PLAYER_CONSTANTS["weapon"]["projectile"]["speed"]
             
-                    bullet2 = Boss_Shoot(self.position.x, self.position.y, self.rotation-10)
+                    bullet2 = Boss_Bullet(self.position.x, self.position.y, self.rotation-10)
                     bullet2.velocity = pygame.Vector2(0, 1).rotate(self.rotation-10)*PLAYER_CONSTANTS["weapon"]["projectile"]["speed"]
             
                 case 3:
-                    bullet1 = Boss_Shoot(self.position.x, self.position.y, self.rotation)
+                    bullet1 = Boss_Bullet(self.position.x, self.position.y, self.rotation)
                     bullet1.velocity = pygame.Vector2(0, 1).rotate(self.rotation)*PLAYER_CONSTANTS["weapon"]["projectile"]["speed"]
                     
-                    bullet2 = Boss_Shoot(self.position.x, self.position.y, self.rotation+20)
+                    bullet2 = Boss_Bullet(self.position.x, self.position.y, self.rotation+20)
                     bullet2.velocity = pygame.Vector2(0, 1).rotate(self.rotation+20)*PLAYER_CONSTANTS["weapon"]["projectile"]["speed"]
                     
-                    bullet3 = Boss_Shoot(self.position.x, self.position.y, self.rotation-20)
+                    bullet3 = Boss_Bullet(self.position.x, self.position.y, self.rotation-20)
                     bullet3.velocity = pygame.Vector2(0, 1).rotate(self.rotation-20)*PLAYER_CONSTANTS["weapon"]["projectile"]["speed"]
             
             self.__shoot_timer = PLAYER_CONSTANTS["weapon"]["rate_of_fire"][self.__level["rate_of_fire"][0]-1]

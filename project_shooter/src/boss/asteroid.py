@@ -8,8 +8,9 @@ class Asteroid(CircleShape):
         super().__init__(x, y, radius, image_url)
         
     def update(self, dt):
-        self.position += self.velocity*dt
-        self.image_rect.center = self.position
+        super().update(dt)
+        if not self.inside():
+            self.kill()
     
     def inside(self):
         return (-100 <= self.position.x <= SCREEN_WIDTH+100 and

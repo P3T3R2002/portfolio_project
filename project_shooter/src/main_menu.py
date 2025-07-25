@@ -59,8 +59,8 @@ class MainMenu:
         self.texts['score'] = [UpgradeInfoText(SCREEN_WIDTH/2, MENU_CONSTANTS["position_Y"]['score'], f"current score: {self.score}")]
 
         self.texts['button'] = [
-            ButtonText(SCREEN_WIDTH/2, MENU_CONSTANTS["position_Y"]["play"], "PLAY"),
-            ButtonText(SCREEN_WIDTH/2, MENU_CONSTANTS["position_Y"]["exit"], "EXIT")
+            ButtonText(SCREEN_WIDTH/2, MENU_CONSTANTS["position_Y"]["exit"], "EXIT"),
+            ButtonText(SCREEN_WIDTH/2, MENU_CONSTANTS["position_Y"]["play"], "PLAY")
         ]
 
 
@@ -133,8 +133,8 @@ class MainMenu:
 
 
 def click_inside_play(click_pos):
-    distance = click_pos.distance_to(pygame.Vector2(SCREEN_WIDTH/2, MENU_CONSTANTS["position_Y"]["play"]))
+    distance = click_pos.distance_to(pygame.Vector2(SCREEN_WIDTH/2, MENU_CONSTANTS["position_Y"]["play"]+MENU_CONSTANTS['font_size']['button']/2))
     return distance < MENU_CONSTANTS['font_size']['button']
 def click_inside_exit(click_pos):
-    distance = click_pos.distance_to(pygame.Vector2(SCREEN_WIDTH/2, MENU_CONSTANTS["position_Y"]["exit"]))
+    distance = click_pos.distance_to(pygame.Vector2(SCREEN_WIDTH/2, MENU_CONSTANTS["position_Y"]["exit"]+MENU_CONSTANTS['font_size']['button']/2))
     return distance < MENU_CONSTANTS['font_size']['button']

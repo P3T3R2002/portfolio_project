@@ -10,9 +10,6 @@ class Enemy(Character):
         self.friendly = False
         self.image = pygame.transform.rotate(self.image, 180)
     
-    def draw(self, screen):
-        screen.blit(self.image, self.image_rect)  
-
     def update(self, dt):
         self.move(dt)
         if self.__shoot_timer > 0:
